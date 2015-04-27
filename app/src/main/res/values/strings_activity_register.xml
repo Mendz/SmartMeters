@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_view_title">Registration Page : New User</string>
+
+    <string name="edit_text_user_name">User Name</string>
+    <string name="edit_text_password">Password</string>
+    <string name="edit_text_re_password">Re Password</string>
+    <string name="edit_text_address">Address</string>
+    <string name="edit_text_phone_number">Phone Number</string>
+
+    <string name="error_password_not_identical">The passwords is not the same</string>
+    <string name="error_password_empty">You have to enter password</string>
+    <string name="error_re_password_empty">You have to repeat the password</string>
+</resources>
