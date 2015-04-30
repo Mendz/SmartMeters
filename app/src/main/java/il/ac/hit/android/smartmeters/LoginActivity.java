@@ -20,12 +20,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import com.google.android.gms.internal.bu;
+import android.widget.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +31,6 @@ import java.util.List;
  */
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, OnClickListener
 {
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{"tom:123", "mendz:456"};
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -54,7 +43,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     private View mLoginFormView;
     private Button mButtonForgotPassword;
     private Button mButtonRegister;
-    public final static String EXTRA_USER_NAME = "com.hit.android.smartmeters.USER_NAME";
+
+    private static final int BACKGROUND_COLOR_LOGIN_PROGRESS = 1;
+    private static final int BACKGROUND_COLOR_DEFAULT = 2;
+    private View mLayoutLoginActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -91,6 +84,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        // ((ProgressBar)mProgressView).getIndeterminateDrawable().setColorFilter(0xffff00ff, android.graphics.PorterDuff.Mode.MULTIPLY);
+
+        mLayoutLoginActivity = findViewById(R.id.layoutLogin);
+
     }
 
     @Override
@@ -116,12 +114,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
                 mButtonForgotPassword.setVisibility(View.INVISIBLE);
                 Intent intent = new Intent(this, ForgotPasswordActivity.class);
 
-                String userName = mUserNameView.getText().toString();
-
-
-                intent.putExtra(EXTRA_USER_NAME, userName);
-
-                startActivityForResult(intent, 100);
+                startActivity(intent);
             }
             break;
         }
@@ -158,7 +151,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password))
+        if (TextUtils.isEmpty(password) && !isPasswordValid(password))
         {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
@@ -213,6 +206,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show)
     {
+
+        setBackgroundColorLoginProgress(show ? BACKGROUND_COLOR_LOGIN_PROGRESS : BACKGROUND_COLOR_DEFAULT);
+
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
@@ -242,6 +238,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         }
         else
         {
+            setBackgroundColorLoginProgress(show ? BACKGROUND_COLOR_LOGIN_PROGRESS : BACKGROUND_COLOR_DEFAULT);
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
@@ -267,7 +264,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
     {
-        List<String> userNames = new ArrayList<String>();
+        List<String> userNames = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast())
         {
@@ -292,11 +289,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         int IS_PRIMARY = 1;
     }
 
-
+    //TODO: change this and akk the other methods to take user names from our database!
+    //TODO: it will show if there is a user name like this..
     private void addUserNamesToAutoComplete(List<String> userNamesCollection)
     {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(LoginActivity.this, android.R.layout.simple_dropdown_item_1line, userNamesCollection);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(LoginActivity.this, android.R.layout.simple_dropdown_item_1line, userNamesCollection);
 
         mUserNameView.setAdapter(adapter);
     }
@@ -331,18 +329,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS)
-            {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUserName))
-                {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
 
-            // TODO: register the new account here.
-            return true;
+            //There input user or the password are not correct
+            return UtilsDataBase.isUserNameAndPasswordAreCorrect(mUserName, mPassword);
         }
 
         @Override
@@ -353,10 +342,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
             if (success)
             {
+                //TODO: add here to go the Client\Admin\Support activity.
                 finish();
             }
             else
             {
+                //TODO: for now it will show this error even when the user name is incorrect.
                 mButtonForgotPassword.setVisibility(View.VISIBLE);
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -387,6 +378,23 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         }
 
         return true;
+    }
+
+    private void setBackgroundColorLoginProgress(int backgroundColor)
+    {
+        switch (backgroundColor)
+        {
+            case BACKGROUND_COLOR_LOGIN_PROGRESS:
+            {
+                mLayoutLoginActivity.setBackground(getResources().getDrawable(R.color.color_background_layout_login));
+            }
+            break;
+            case BACKGROUND_COLOR_DEFAULT:
+            {
+                mLayoutLoginActivity.setBackground(getResources().getDrawable(R.color.color_background_layout));
+            }
+            break;
+        }
     }
 }
 

@@ -4,18 +4,21 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-
+import android.widget.EditText;
 
 
 public class ForgotPasswordActivity extends ActionBarActivity implements View.OnClickListener
 {
-    private AlertDialog.Builder builder;
-    private AlertDialog alert;
-    private String userGetPassword;
+    private AlertDialog _alertDialog;
+    private String _userGetPassword = null;
+    private EditText _editTextUserName;
+    private AlertDialog.Builder _builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -23,12 +26,14 @@ public class ForgotPasswordActivity extends ActionBarActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
-        //TODO: change this to the password from the database
-        userGetPassword = "TEMP_PASSWORD";
-
         Button buttonGetPassword = (Button) findViewById(R.id.buttonGetPassword);
 
         buttonGetPassword.setOnClickListener(this);
+
+        _editTextUserName = (EditText) findViewById(R.id.editTextUserNameForGetPass);
+        _editTextUserName.setError(null);
+
+        _builder = new AlertDialog.Builder(this);
     }
 
 
@@ -52,7 +57,7 @@ public class ForgotPasswordActivity extends ActionBarActivity implements View.On
         if (id == R.id.action_settings)
         {
             return true;
-            
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -65,28 +70,50 @@ public class ForgotPasswordActivity extends ActionBarActivity implements View.On
         {
             case R.id.buttonGetPassword:
             {
-                setDialogAlertPassword();
+                if (!TextUtils.isEmpty(_editTextUserName.getText().toString()))
+                {
+                    String userName = _editTextUserName.getText().toString();
+                    _userGetPassword = UtilsDataBase.getPasswordIfUserNameExits(userName);
 
-                alert.show();
+                    if (_userGetPassword != null)
+                    {
+                        Log.i("forgot_password", "The user: " + _editTextUserName.getText().toString() + " exits with the password: " + _userGetPassword);
+                        setDialogAlertPasswordAndShow();
+                    }
+                    else
+                    {
+                        Log.i("forgot_password", "The user: " + _editTextUserName.getText().toString() + " not exits");
+                        setEditTextErrorAndFocus(_editTextUserName, getString(R.string.edit_text_error_user_name_not_match));
+                    }
+                }
+                else
+                {
+                    setEditTextErrorAndFocus(_editTextUserName, getString(R.string.edit_text_error_user_name_required));
+                }
             }
             break;
         }
 
     }
 
-    private void setDialogAlertPassword()
+    private void setDialogAlertPasswordAndShow()
     {
-        builder = new AlertDialog.Builder(this);
-        builder.setTitle("Your Password")
-                .setMessage("Your Password is -  " + userGetPassword)
-                .setCancelable(false)
-                .setNegativeButton("Close",new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        alert = builder.create();
+        Log.i("forgot_password", "Setting the dialog with the password: " + _userGetPassword);
+        String userName = _editTextUserName.getText().toString();
+        _builder.setTitle("Hello " + userName).setMessage("Your Password is -  " + _userGetPassword).setCancelable(false).setNegativeButton("Close", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
+                dialog.cancel();
+            }
+        });
+        _alertDialog = _builder.create();
+        _alertDialog.show();
     }
 
-
+    private void setEditTextErrorAndFocus(EditText editText, String error)
+    {
+        editText.setError(error);
+        editText.requestFocus();
+    }
 }

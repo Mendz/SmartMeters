@@ -2,13 +2,14 @@
 <resources>
     <string name="text_view_title">Registration Page : New User</string>
 
-    <string name="edit_text_user_name">User Name</string>
-    <string name="edit_text_password">Password</string>
-    <string name="edit_text_re_password">Re Password</string>
-    <string name="edit_text_address">Address</string>
-    <string name="edit_text_phone_number">Phone Number</string>
+    <string name="edit_text_user_name">User Name (MUST)</string>
+    <string name="edit_text_password">Password (MUST)</string>
+    <string name="edit_text_re_password">Re Password (MUST)</string>
+    <string name="edit_text_address">Address (MUST)</string>
+    <string name="edit_text_phone_number">Phone Number (OPTIONAL)</string>
 
     <string name="error_password_not_identical">The passwords is not the same</string>
     <string name="error_password_empty">You have to enter password</string>
     <string name="error_re_password_empty">You have to repeat the password</string>
+    <string name="error_user_name_already_exists">You user name input is already exists</string>
 </resources>

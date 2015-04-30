@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_background_layout">@color/accent_material_light</color>
+    <color name="color_background_layout_login">@color/material_blue_grey_800</color>
+    <color name="color_test">#00786D</color>
+    <!--#009688-->
+    <color name="color_test2">#37474f</color>
 </resources>
