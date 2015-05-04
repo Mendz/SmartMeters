@@ -65,6 +65,11 @@
                     android:maxLines="1"
                     android:singleLine="true"/>
 
+            <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_remember_password"
+                    android:id="@+id/checkBoxRememberPassword"/>
             <Button
                     android:id="@+id/userNameSignInButton"
                     style="?android:textAppearanceSmall"

@@ -55,6 +55,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if(userDataRemembered())
+        {
+            goToIntentByUser();
+        }
+
+
         mButtonForgotPassword = (Button) findViewById(R.id.buttonForgetPassword);
         mButtonForgotPassword.setOnClickListener(this);
         mButtonRegister = (Button) findViewById(R.id.buttonRegister);
@@ -88,7 +94,21 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         // ((ProgressBar)mProgressView).getIndeterminateDrawable().setColorFilter(0xffff00ff, android.graphics.PorterDuff.Mode.MULTIPLY);
 
         mLayoutLoginActivity = findViewById(R.id.layoutLogin);
+        mLoginFormView.requestFocus();
 
+    }
+
+    private void goToIntentByUser()
+    {
+        //TODO: add here to go the Client\Admin\Support activity.
+        finish();
+    }
+
+    private boolean userDataRemembered()
+    {
+        //TODO: Enter here checking if the user data is saved.
+        //TODO: If yes, return true else return false.
+        return false;
     }
 
     @Override
@@ -180,12 +200,25 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         }
         else
         {
+            CheckBox checkBoxRememberPassword = (CheckBox) findViewById(R.id.checkBoxRememberPassword);
+
+            if (checkBoxRememberPassword.isChecked())
+            {
+                rememberUserLogin(userName, password);
+            }
+
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(userName, password);
             mAuthTask.execute((Void) null);
         }
+    }
+
+    private void rememberUserLogin(String userName, String password)
+    {
+        //TODO: Enter here saving user name and password for future uses.
+        //TODO: Searching by name the id and save it, maybe not need the password?
     }
 
     private boolean isUserNameValid(String userName)
@@ -342,8 +375,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
             if (success)
             {
-                //TODO: add here to go the Client\Admin\Support activity.
-                finish();
+                goToIntentByUser();
             }
             else
             {

@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:ems="10"
+            android:ems="12"
             android:id="@+id/editTextUserName"
             android:hint="@string/edit_text_user_name"
             android:layout_marginTop="40dp"/>
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:ems="10"
+            android:ems="12"
             android:id="@+id/editTextPassword"
             android:hint="@string/edit_text_password"/>
 
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:ems="10"
+            android:ems="12"
             android:id="@+id/editTextRePassword"
             android:hint="@string/edit_text_re_password"/>
 
@@ -47,19 +47,19 @@
             android:layout_height="wrap_content"
             android:id="@+id/editTextAddress"
             android:inputType="text"
-            android:ems="10"
+            android:ems="12"
             android:hint="@string/edit_text_address"/>
 
     <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            android:ems="10"
+            android:ems="12"
             android:id="@+id/editTextPhoneNumber"
             android:hint="@string/edit_text_phone_number"/>
 
     <Button
-            android:layout_width="210dp"
+            android:layout_width="212dp"
             android:layout_height="wrap_content"
             android:text="@string/button_save"
             android:id="@+id/buttonGetPassword"
