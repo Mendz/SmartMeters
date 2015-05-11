@@ -21,7 +21,6 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,6 +42,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="il.ac.hit.android.smartmeters.LoginActivity" />
+        </activity>
+        <activity
+            android:name=".client"
+            android:label="@string/title_activity_client" >
         </activity>
     </application>
 
