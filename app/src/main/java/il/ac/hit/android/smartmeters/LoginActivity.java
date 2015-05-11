@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
+import il.ac.hit.android.smartmeters.utils.UtilsDataBase;
 
 import java.util.ArrayList;
 import java.util.List;

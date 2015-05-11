@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marker_title">Meter - </string>
+    <string name="marker_meter_id">Id: </string>
+    <string name="marker_meter_address">Address:  </string>
+    <string name="marker_meter_kwhCumulative">kWh Cumulative:  </string>
+</resources>

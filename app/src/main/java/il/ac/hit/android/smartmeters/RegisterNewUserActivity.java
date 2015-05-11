@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import il.ac.hit.android.smartmeters.utils.UtilsDataBase;
 
 import java.util.ArrayList;
 import java.util.List;

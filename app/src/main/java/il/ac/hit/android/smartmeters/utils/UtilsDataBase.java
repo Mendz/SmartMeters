@@ -1,4 +1,4 @@
-package il.ac.hit.android.smartmeters;
+package il.ac.hit.android.smartmeters.utils;
 
 import android.util.Log;
 
