@@ -25,6 +25,7 @@ public class Tables {
         public  static  final String UserId = "UserId";
         public  static  final String MeterID = "MeterID";
         public  static  final String Address = "Address";
+        public  static  final String kWh = "kWh";
         public  static  final String TableName = "MeterTable";
     }
 
@@ -34,7 +35,9 @@ public class Tables {
         public  static  final String MeterID = "MeterID";
         public  static  final String Date = "Date";
         public  static  final String Time = "Time";
+        public  static  final String kWhRead = "kWhRead";
         public  static  final String TableName = "ReadingTable";
     }
 
 }
+
