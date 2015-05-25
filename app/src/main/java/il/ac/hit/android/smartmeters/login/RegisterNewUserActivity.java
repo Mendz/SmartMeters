@@ -1,4 +1,4 @@
-package il.ac.hit.android.smartmeters;
+package il.ac.hit.android.smartmeters.login;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
@@ -12,11 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import il.ac.hit.android.smartmeters.R;
 import il.ac.hit.android.smartmeters.database.DatabaseOperations;
 import il.ac.hit.android.smartmeters.utils.UtilsDataBase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class RegisterNewUserActivity extends ActionBarActivity implements View.OnClickListener, TextWatcher
@@ -119,13 +121,14 @@ public class RegisterNewUserActivity extends ActionBarActivity implements View.O
         {
             case R.id.buttonGetPassword:
             {
+                DatabaseOperations databaseOperations = new DatabaseOperations(this);
                 String userName = _editTextUserName.getText().toString();
                 boolean cancel = false;
 
                 setPasswordsMembers();
                 View focusView = _editTextPassword;
 
-                if (UtilsDataBase.checkIfUserNameExists(userName))
+                if (databaseOperations.checkIfUserNameExists(userName))
                 {
                     _editTextUserName.setError(getString(R.string.error_user_name_already_exists));
                     focusView = _editTextUserName;
@@ -150,10 +153,10 @@ public class RegisterNewUserActivity extends ActionBarActivity implements View.O
                     String clientName = _editTextUserName.getText().toString();
                     String address = _editTextAddress.getText().toString();
                     String phoneNumber = _editTextPhoneNumber.getText().toString();
+                    String clientId = String.valueOf(UUID.randomUUID());
 
-                    //todo: find a way to id
-                    DatabaseOperations databaseOperations = new DatabaseOperations(this);
-                    databaseOperations.setClient(databaseOperations,"1",_password,clientName,address,phoneNumber);
+
+                    databaseOperations.setClient(databaseOperations, clientId, _password, clientName, address, phoneNumber);
 
 
                     Toast.makeText(getApplicationContext(), "The user : \"" + userName + "\" is added.", Toast.LENGTH_LONG)

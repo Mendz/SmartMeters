@@ -6,21 +6,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ReportsActivity extends ActionBarActivity
+public class AdminActivity extends ActionBarActivity
 {
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reports);
+        setContentView(R.layout.activity_admin);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_reports, menu);
+        getMenuInflater().inflate(R.menu.menu_admin, menu);
         return true;
     }
 

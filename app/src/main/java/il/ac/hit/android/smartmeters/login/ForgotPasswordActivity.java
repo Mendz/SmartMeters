@@ -1,4 +1,4 @@
-package il.ac.hit.android.smartmeters;
+package il.ac.hit.android.smartmeters.login;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import il.ac.hit.android.smartmeters.R;
 import il.ac.hit.android.smartmeters.utils.UtilsDataBase;
 
 

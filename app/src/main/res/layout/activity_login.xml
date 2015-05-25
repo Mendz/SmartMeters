@@ -8,7 +8,7 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context="il.ac.hit.android.smartmeters.LoginActivity"
+              tools:context="il.ac.hit.android.smartmeters.login.LoginActivity"
               android:background="@color/color_background_layout"
               android:id="@+id/layoutLogin">
 

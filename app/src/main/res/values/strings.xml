@@ -9,4 +9,6 @@
     <string name="title_activity_client">client</string>
     <string name="title_activity_client_map">Client Map</string>
     <string name="title_activity_reports">ReportsActivity</string>
+    <string name="title_activity_admin">AdminActivity</string>
+    <string name="title_activity_support">SupportActivity</string>
 </resources>

@@ -1,10 +1,11 @@
-package il.ac.hit.android.smartmeters;
+package il.ac.hit.android.smartmeters.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -16,12 +17,18 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
-import il.ac.hit.android.smartmeters.utils.UtilsDataBase;
+import il.ac.hit.android.smartmeters.AdminActivity;
+import il.ac.hit.android.smartmeters.R;
+import il.ac.hit.android.smartmeters.support.SupportActivity;
+import il.ac.hit.android.smartmeters.client.ClientActivity;
+import il.ac.hit.android.smartmeters.database.DatabaseOperations;
+import il.ac.hit.android.smartmeters.database.Tables;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,10 +63,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if(userDataRemembered())
-        {
-            goToIntentByUser();
-        }
+        //todo: shared preference
+        //        if (userDataRemembered())
+        //        {
+        //            goToIntentByUser();
+        //        }
 
 
         mButtonForgotPassword = (Button) findViewById(R.id.buttonForgetPassword);
@@ -92,17 +100,50 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        // ((ProgressBar)mProgressView).getIndeterminateDrawable().setColorFilter(0xffff00ff, android.graphics.PorterDuff.Mode.MULTIPLY);
-
         mLayoutLoginActivity = findViewById(R.id.layoutLogin);
         mLoginFormView.requestFocus();
 
     }
 
-    private void goToIntentByUser()
+    private void goToIntentByUser(String clientId)
     {
         //TODO: add here to go the Client\Admin\Support activity.
-        finish();
+        DatabaseOperations databaseOperations = new DatabaseOperations(this);
+
+        String userType = databaseOperations.getUserTypeById(clientId);
+        Intent intent = null;
+
+        switch (userType)
+        {
+            case Tables.UserTypeTable.UserTypes.ADMIN:
+            {
+                intent = new Intent(this, AdminActivity.class);
+            }
+            break;
+            case Tables.UserTypeTable.UserTypes.SUPPORT:
+            {
+                intent = new Intent(this, SupportActivity.class);
+            }
+            break;
+            case Tables.UserTypeTable.UserTypes.CLINET:
+            {
+                intent = new Intent(this, ClientActivity.class);
+                intent.putExtra(Tables.ClientTable.UserId, clientId);
+            }
+            break;
+        }
+
+        if (intent != null)
+        {
+            startActivity(intent);
+        }
+        else
+        {
+            Log.e("login_activity", "Wrong User Type: " + userType);
+            Toast.makeText(this, "An error occurred with user type: " + userType, Toast.LENGTH_SHORT).show();
+        }
+
+        //finish();
     }
 
     private boolean userDataRemembered()
@@ -145,7 +186,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     {
         getLoaderManager().initLoader(0, null, this);
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -211,7 +251,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(userName, password);
+            mAuthTask = new UserLoginTask(userName, password, this);
             mAuthTask.execute((Void) null);
         }
     }
@@ -224,13 +264,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
     private boolean isUserNameValid(String userName)
     {
-        //TODO: Replace this with your own logic
         return !isStringNullOrWhiteSpace(userName);
     }
 
     private boolean isPasswordValid(String password)
     {
-        //TODO: Replace this with your own logic
         return password.length() >= getResources().getInteger(R.integer.min_password_length);
     }
 
@@ -251,24 +289,30 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(show ? 0 : 1).setListener(new AnimatorListenerAdapter()
-            {
-                @Override
-                public void onAnimationEnd(Animator animation)
-                {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+            mLoginFormView.animate()
+                    .setDuration(shortAnimTime)
+                    .alpha(show ? 0 : 1)
+                    .setListener(new AnimatorListenerAdapter()
+                    {
+                        @Override
+                        public void onAnimationEnd(Animator animation)
+                        {
+                            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                        }
+                    });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0).setListener(new AnimatorListenerAdapter()
-            {
-                @Override
-                public void onAnimationEnd(Animator animation)
-                {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
+            mProgressView.animate()
+                    .setDuration(shortAnimTime)
+                    .alpha(show ? 1 : 0)
+                    .setListener(new AnimatorListenerAdapter()
+                    {
+                        @Override
+                        public void onAnimationEnd(Animator animation)
+                        {
+                            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                        }
+                    });
         }
         else
         {
@@ -342,30 +386,33 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
         private final String mUserName;
         private final String mPassword;
+        private DatabaseOperations mDatabaseOperations;
+        private String mClientId;
 
-        UserLoginTask(String userName, String password)
+        UserLoginTask(String userName, String password, Context context)
         {
             mUserName = userName;
             mPassword = password;
+            mDatabaseOperations = new DatabaseOperations(context);
+
         }
 
         @Override
         protected Boolean doInBackground(Void... params)
         {
-            // TODO: attempt authentication against a network service.
-
-            try
-            {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e)
-            {
-                return false;
-            }
+            //            try
+            //            {
+            //                // Simulate network access.
+            //                Thread.sleep(2000);
+            //            } catch (InterruptedException e)
+            //            {
+            //                return false;
+            //            }
 
 
-            //There input user or the password are not correct
-            return UtilsDataBase.isUserNameAndPasswordAreCorrect(mUserName, mPassword);
+            mClientId = mDatabaseOperations.isUserNameAndPasswordAreCorrect(mUserName, mPassword);
+
+            return mClientId != null;
         }
 
         @Override
@@ -376,7 +423,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
             if (success)
             {
-                goToIntentByUser();
+                goToIntentByUser(mClientId);
             }
             else
             {
