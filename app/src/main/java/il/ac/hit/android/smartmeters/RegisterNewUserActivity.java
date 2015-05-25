@@ -151,6 +151,7 @@ public class RegisterNewUserActivity extends ActionBarActivity implements View.O
                     String address = _editTextAddress.getText().toString();
                     String phoneNumber = _editTextPhoneNumber.getText().toString();
 
+                    //todo: find a way to id
                     DatabaseOperations databaseOperations = new DatabaseOperations(this);
                     databaseOperations.setClient(databaseOperations,"1",_password,clientName,address,phoneNumber);
 
