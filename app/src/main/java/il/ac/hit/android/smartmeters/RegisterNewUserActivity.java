@@ -1,5 +1,6 @@
 package il.ac.hit.android.smartmeters;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import il.ac.hit.android.smartmeters.database.DatabaseOperations;
 import il.ac.hit.android.smartmeters.utils.UtilsDataBase;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class RegisterNewUserActivity extends ActionBarActivity implements View.O
     private EditText _editTextAddress;
     private EditText _editTextPassword;
     private EditText _editTextRePassword;
+    private EditText _editTextPhoneNumber;
     private Button _buttonSave;
     private String _password;
     private String _rePassword;
@@ -46,6 +49,7 @@ public class RegisterNewUserActivity extends ActionBarActivity implements View.O
         _editTextAddress = (EditText) findViewById(R.id.editTextAddress);
         _editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         _editTextRePassword = (EditText) findViewById(R.id.editTextRePassword);
+        _editTextPhoneNumber = (EditText) findViewById(R.id.editTextPhoneNumber);
 
         _editTextUserName.setError(null);
         _editTextAddress.setError(null);
@@ -141,11 +145,18 @@ public class RegisterNewUserActivity extends ActionBarActivity implements View.O
                 }
                 else
                 {
-                    //TODO: add here the connection to the database to add the user.
                     //TODO: maybe add a progress bar
 
+                    String clientName = _editTextUserName.getText().toString();
+                    String address = _editTextAddress.getText().toString();
+                    String phoneNumber = _editTextPhoneNumber.getText().toString();
 
-                    Toast.makeText(getApplicationContext(), "The user : \"" + userName + "\" is added.", Toast.LENGTH_LONG).show();
+                    DatabaseOperations databaseOperations = new DatabaseOperations(this);
+                    databaseOperations.setClient(databaseOperations,"1",_password,clientName,address,phoneNumber);
+
+
+                    Toast.makeText(getApplicationContext(), "The user : \"" + userName + "\" is added.", Toast.LENGTH_LONG)
+                            .show();
 
                     finish();
                 }

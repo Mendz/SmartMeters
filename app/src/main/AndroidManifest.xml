@@ -15,7 +15,9 @@
          Google Maps Android API v2, but are recommended.
     -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- @mipmap/ic_launcher -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <!-- @mipmap/ic_launcher -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon_meter"
@@ -69,6 +71,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="il.ac.hit.android.smartmeters.client" />
+        </activity>
+        <activity
+            android:name=".ReportsActivity"
+            android:label="@string/title_activity_reports" >
         </activity>
     </application>
 
