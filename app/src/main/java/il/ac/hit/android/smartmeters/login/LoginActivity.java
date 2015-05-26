@@ -191,16 +191,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         return null;
     }
 
-    private void saveLoginPreferences()
+    private void saveLoginPreferences(String clientId, String clientName, String password)
     {
-        String clientName = mUserNameView.getText().toString();
-        String password = mPasswordView.getText().toString();
-
         if (mCheckBoxRememberPassword.isChecked())
         {
             mLoginPrefsEditor.putBoolean(LoginPreferences.SAVE_LOGIN, true);
             mLoginPrefsEditor.putString(LoginPreferences.CLIENT_NAME, clientName);
             mLoginPrefsEditor.putString(LoginPreferences.CLIENT_PASSWORD, password);
+            mLoginPrefsEditor.putString(LoginPreferences.CLIENT_ID, clientId);
             mLoginPrefsEditor.commit();
         }
         else
@@ -298,25 +296,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         }
         else
         {
-            CheckBox checkBoxRememberPassword = (CheckBox) findViewById(R.id.checkBoxRememberPassword);
-
-            if (checkBoxRememberPassword.isChecked())
-            {
-                rememberUserLogin(userName, password);
-            }
-
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
             mAuthTask = new UserLoginTask(userName, password, this);
             mAuthTask.execute((Void) null);
         }
-    }
-
-    private void rememberUserLogin(String userName, String password)
-    {
-        //TODO: Enter here saving user name and password for future uses.
-        //TODO: Searching by name the id and save it, maybe not need the password?
     }
 
     private boolean isUserNameValid(String userName)
@@ -486,7 +471,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
             if (success)
             {
-                saveLoginPreferences();
+                saveLoginPreferences(mClientId, mUserName, mPassword);
                 goToIntentByUser(mClientId);
             }
             else

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import il.ac.hit.android.smartmeters.R;
+import il.ac.hit.android.smartmeters.utils.UtilsSignOut;
 
 
 public class SupportActivity extends ActionBarActivity
@@ -37,6 +38,11 @@ public class SupportActivity extends ActionBarActivity
         if (id == R.id.action_settings)
         {
             return true;
+        }
+
+        if (id == R.id.action_log_off)
+        {
+            UtilsSignOut.logOff(this);
         }
 
         return super.onOptionsItemSelected(item);

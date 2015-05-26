@@ -4,6 +4,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import il.ac.hit.android.smartmeters.utils.UtilsSignOut;
 
 
 public class AdminActivity extends ActionBarActivity
@@ -36,6 +37,11 @@ public class AdminActivity extends ActionBarActivity
         if (id == R.id.action_settings)
         {
             return true;
+        }
+
+        if (id == R.id.action_log_off)
+        {
+            UtilsSignOut.logOff(this);
         }
 
         return super.onOptionsItemSelected(item);
