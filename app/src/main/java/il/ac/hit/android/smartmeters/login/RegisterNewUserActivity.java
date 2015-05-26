@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import il.ac.hit.android.smartmeters.R;
 import il.ac.hit.android.smartmeters.database.DatabaseOperations;
+import il.ac.hit.android.smartmeters.database.Tables;
 import il.ac.hit.android.smartmeters.utils.UtilsDataBase;
 
 import java.util.ArrayList;
@@ -142,6 +143,13 @@ public class RegisterNewUserActivity extends ActionBarActivity implements View.O
                     cancel = true;
                 }
 
+                if (!isPasswordValid())
+                {
+                    _editTextPassword.setError(getString(R.string.error_password_short));
+                    focusView = _editTextPassword;
+                    cancel = true;
+                }
+
                 if (cancel)
                 {
                     focusView.requestFocus();
@@ -154,9 +162,11 @@ public class RegisterNewUserActivity extends ActionBarActivity implements View.O
                     String address = _editTextAddress.getText().toString();
                     String phoneNumber = _editTextPhoneNumber.getText().toString();
                     String clientId = String.valueOf(UUID.randomUUID());
+                    clientId = TextUtils.substring(clientId,0,7);
 
 
                     databaseOperations.setClient(databaseOperations, clientId, _password, clientName, address, phoneNumber);
+                    databaseOperations.setUserType(databaseOperations, clientId, Tables.UserTypeTable.UserTypes.CLIENT);
 
 
                     Toast.makeText(getApplicationContext(), "The user : \"" + userName + "\" is added.", Toast.LENGTH_LONG)
@@ -208,5 +218,10 @@ public class RegisterNewUserActivity extends ActionBarActivity implements View.O
         }
 
         return true;
+    }
+
+    private boolean isPasswordValid()
+    {
+        return _password.length() >= getResources().getInteger(R.integer.min_password_length);
     }
 }

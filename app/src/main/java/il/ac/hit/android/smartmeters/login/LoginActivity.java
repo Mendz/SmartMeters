@@ -5,10 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.Context;
-import android.content.CursorLoader;
-import android.content.Intent;
-import android.content.Loader;
+import android.content.*;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -51,10 +48,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     private View mLoginFormView;
     private Button mButtonForgotPassword;
     private Button mButtonRegister;
+    private CheckBox mCheckBoxRememberPassword;
 
     private static final int BACKGROUND_COLOR_LOGIN_PROGRESS = 1;
     private static final int BACKGROUND_COLOR_DEFAULT = 2;
     private View mLayoutLoginActivity;
+
+    private SharedPreferences mLoginPreferences;
+    private SharedPreferences.Editor mLoginPrefsEditor;
 
 
     @Override
@@ -63,11 +64,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //todo: shared preference
-        //        if (userDataRemembered())
-        //        {
-        //            goToIntentByUser();
-        //        }
+        printToLogAllTables();
+
+
+        mCheckBoxRememberPassword = (CheckBox) findViewById(R.id.checkBoxRememberPassword);
+
+        String clientId = getClientIdIfUserDataRemembered();
+
+        if (clientId != null)
+        {
+            goToIntentByUser(clientId);
+        }
 
 
         mButtonForgotPassword = (Button) findViewById(R.id.buttonForgetPassword);
@@ -105,9 +112,24 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
     }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        printToLogAllTables();
+    }
+
+    private void printToLogAllTables()
+    {
+        DatabaseOperations databaseOperations = new DatabaseOperations(this);
+        String allTables = databaseOperations.getAllTablesString(databaseOperations);
+
+        Log.d("Dtabase operations", "All the database: \n\n" + allTables);
+    }
+
     private void goToIntentByUser(String clientId)
     {
-        //TODO: add here to go the Client\Admin\Support activity.
+        showProgress(true);
         DatabaseOperations databaseOperations = new DatabaseOperations(this);
 
         String userType = databaseOperations.getUserTypeById(clientId);
@@ -125,13 +147,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
                 intent = new Intent(this, SupportActivity.class);
             }
             break;
-            case Tables.UserTypeTable.UserTypes.CLINET:
+            case Tables.UserTypeTable.UserTypes.CLIENT:
             {
                 intent = new Intent(this, ClientActivity.class);
                 intent.putExtra(Tables.ClientTable.UserId, clientId);
             }
             break;
         }
+
+        showProgress(false);
 
         if (intent != null)
         {
@@ -146,11 +170,44 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         //finish();
     }
 
-    private boolean userDataRemembered()
+    private String getClientIdIfUserDataRemembered()
     {
-        //TODO: Enter here checking if the user data is saved.
-        //TODO: If yes, return true else return false.
-        return false;
+        boolean saveLogin;
+
+        mLoginPreferences = getSharedPreferences(LoginPreferences.NAME, MODE_PRIVATE);
+        mLoginPrefsEditor = mLoginPreferences.edit();
+
+        saveLogin = mLoginPreferences.getBoolean(LoginPreferences.SAVE_LOGIN, false);
+
+        if (saveLogin)
+        {
+            mUserNameView.setText(mLoginPreferences.getString(LoginPreferences.CLIENT_NAME, ""));
+            mPasswordView.setText(mLoginPreferences.getString(LoginPreferences.CLIENT_PASSWORD, ""));
+            mCheckBoxRememberPassword.setChecked(true);
+
+            return mLoginPreferences.getString(LoginPreferences.CLIENT_ID, "");
+        }
+
+        return null;
+    }
+
+    private void saveLoginPreferences()
+    {
+        String clientName = mUserNameView.getText().toString();
+        String password = mPasswordView.getText().toString();
+
+        if (mCheckBoxRememberPassword.isChecked())
+        {
+            mLoginPrefsEditor.putBoolean(LoginPreferences.SAVE_LOGIN, true);
+            mLoginPrefsEditor.putString(LoginPreferences.CLIENT_NAME, clientName);
+            mLoginPrefsEditor.putString(LoginPreferences.CLIENT_PASSWORD, password);
+            mLoginPrefsEditor.commit();
+        }
+        else
+        {
+            mLoginPrefsEditor.clear();
+            mLoginPrefsEditor.commit();
+        }
     }
 
     @Override
@@ -409,8 +466,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             //                return false;
             //            }
 
-
-            mClientId = mDatabaseOperations.isUserNameAndPasswordAreCorrect(mUserName, mPassword);
+            try
+            {
+                mClientId = mDatabaseOperations.isUserNameAndPasswordAreCorrect(mUserName, mPassword);
+            } catch (Exception e)
+            {
+                Log.e("async_task_background", "There was a problem", e);
+                e.printStackTrace();
+            }
 
             return mClientId != null;
         }
@@ -423,6 +486,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
             if (success)
             {
+                saveLoginPreferences();
                 goToIntentByUser(mClientId);
             }
             else

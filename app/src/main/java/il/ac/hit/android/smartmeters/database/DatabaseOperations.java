@@ -8,17 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 
 public class DatabaseOperations extends SQLiteOpenHelper
 {
     public static final int database_version = 1;
     public String CreateQueryClientTable = "CREATE TABLE " + Tables.ClientTable.TableName + "(" + Tables.ClientTable.UserId + " TEXT," + Tables.ClientTable.ClientName + " TEXT," + Tables.ClientTable.Password + " TEXT," + Tables.ClientTable.Address + " TEXT," + Tables.ClientTable.PhoneNumber + " TEXT);";
-    public String CreateQueryMeterTable = "CREATE TABLE " + Tables.MeterTable.TableName + "(" + Tables.ClientTable.UserId + " TEXT," + Tables.ClientTable.ClientName + " TEXT," + Tables.ClientTable.Password + " TEXT," + Tables.ClientTable.Address + " TEXT," + Tables.ClientTable.PhoneNumber + " TEXT);";
-    public String CreateQueryReadingTable = "CREATE TABLE " + Tables.ReadingTable.TableName + "(" + Tables.ClientTable.UserId + " TEXT," + Tables.ClientTable.ClientName + " TEXT," + Tables.ClientTable.Password + " TEXT," + Tables.ClientTable.Address + " TEXT," + Tables.ClientTable.PhoneNumber + " TEXT);";
+    public String CreateQueryMeterTable = "CREATE TABLE " + Tables.MeterTable.TableName + "(" + Tables.MeterTable.UserId + " TEXT," + Tables.MeterTable.MeterID + " TEXT," + Tables.MeterTable.Address + " TEXT," + Tables.MeterTable.kWh + " TEXT);";
+    public String CreateQueryReadingTable = "CREATE TABLE " + Tables.ReadingTable.TableName + "(" + Tables.ReadingTable.ReadingID + " TEXT," + Tables.ReadingTable.MeterID + " TEXT," + Tables.ReadingTable.Date + " TEXT," + Tables.ReadingTable.Time + " TEXT," + Tables.ReadingTable.kWhRead + " TEXT);";
     public String CreateUserTypeTable = "CREATE TABLE " + Tables.UserTypeTable.TableName + "(" + Tables.UserTypeTable.UserId + " TEXT," + Tables.UserTypeTable.UserType + " TEXT);";
 
     public DatabaseOperations(Context context)
@@ -40,12 +36,15 @@ public class DatabaseOperations extends SQLiteOpenHelper
         Log.d("Dtabase operations", "User Type table created");
 
 
-        putDemoClientInfo();
-        putDemoUserTypeInfo();
-        putDemoMeterInfo();
-        putDemoReadingInfo();
+        putDemoInfoToDb(sdb);
+    }
 
-        Log.d("Dtabase operations", "All the database: \n\n" + getAllTablesString(this));
+    private void putDemoInfoToDb(SQLiteDatabase database)
+    {
+        putDemoClientInfo(database);
+        putDemoUserTypeInfo(database);
+        putDemoMeterInfo(database);
+        putDemoReadingInfo(database);
     }
 
     @Override
@@ -89,6 +88,8 @@ public class DatabaseOperations extends SQLiteOpenHelper
         cv.put(Tables.MeterTable.Address, address);
         cv.put(Tables.MeterTable.kWh, kWh);
         long k = SQ.insert(Tables.MeterTable.TableName, null, cv);
+
+        SQ.close();
         Log.d("Dtabase operations", "One raw inserted to Meter table");
     }
 
@@ -117,7 +118,7 @@ public class DatabaseOperations extends SQLiteOpenHelper
         cv.put(Tables.UserTypeTable.UserId, userId);
         cv.put(Tables.UserTypeTable.UserType, userType);
 
-        long k = SQ.insert(Tables.ClientTable.TableName, null, cv);
+        long k = SQ.insert(Tables.UserTypeTable.TableName, null, cv);
 
         SQ.close();
         Log.d("Dtabase operations", "One raw inserted to User Type table");
@@ -158,71 +159,71 @@ public class DatabaseOperations extends SQLiteOpenHelper
         return CR;
     }
 
-    private void putDemoUserTypeInfo()
+    private void putDemoUserTypeInfo(SQLiteDatabase database)
     {
-        this.setUserType(this, "000", Tables.UserTypeTable.UserTypes.CLINET);
-        this.setUserType(this, "123", Tables.UserTypeTable.UserTypes.CLINET);
-        this.setUserType(this, "456", Tables.UserTypeTable.UserTypes.CLINET);
-        this.setUserType(this, "654", Tables.UserTypeTable.UserTypes.CLINET);
-        this.setUserType(this, "951", Tables.UserTypeTable.UserTypes.ADMIN);
-        this.setUserType(this, "753", Tables.UserTypeTable.UserTypes.SUPPORT);
+        this.setUserTypeDemo(database, "000", Tables.UserTypeTable.UserTypes.CLIENT);
+        this.setUserTypeDemo(database, "123", Tables.UserTypeTable.UserTypes.CLIENT);
+        this.setUserTypeDemo(database, "456", Tables.UserTypeTable.UserTypes.CLIENT);
+        this.setUserTypeDemo(database, "654", Tables.UserTypeTable.UserTypes.CLIENT);
+        this.setUserTypeDemo(database, "951", Tables.UserTypeTable.UserTypes.ADMIN);
+        this.setUserTypeDemo(database, "753", Tables.UserTypeTable.UserTypes.SUPPORT);
     }
 
-    private void putDemoClientInfo()
+    private void putDemoClientInfo(SQLiteDatabase database)
     {
-        this.setClient(this, "951", "123", "Tom", "חולון הטכנולגי המכון", "");
-        this.setClient(this, "753", "123", "Koko", "חולון הטכנולגי המכון", "");
-        this.setClient(this, "000", "mendy", "Mendy", "ראשון 30 מוהליבר", "0549330469");
-        this.setClient(this, "123", "inga", "Inga", "22 הערבה חולון", "0524669721");
-        this.setClient(this, "456", "alon", "Alon", "לציון ראשון מערב", "");
-        this.setClient(this, "654", "idan", "Idan", "המלך יהואחז 5 אשדוד", "");
+        this.setClientDemo(database, "951", "123", "Tom", "חולון הטכנולגי המכון", "");
+        this.setClientDemo(database, "753", "123", "Koko", "חולון הטכנולגי המכון", "");
+        this.setClientDemo(database, "000", "mendy", "Mendy", "ראשון 30 מוהליבר", "0549330469");
+        this.setClientDemo(database, "123", "inga", "Inga", "22 הערבה חולון", "0524669721");
+        this.setClientDemo(database, "456", "alon", "Alon", "לציון ראשון מערב", "");
+        this.setClientDemo(database, "654", "idan", "Idan", "המלך יהואחז 5 אשדוד", "");
     }
 
-    private void putDemoMeterInfo()
+    private void putDemoMeterInfo(SQLiteDatabase database)
     {
-        this.setMeter(this, "11111", "123", "המלך יהואחז 5 אשדוד", "7800");
-        this.setMeter(this, "22222", "123", "הציונות 1 אשדוד", "1400");
-        this.setMeter(this, "33333", "123", "הרב ניסים 13 אשדוד", "9000");
-        this.setMeter(this, "01111", "000", "בלפור 14 תל אביב", "500");
-        this.setMeter(this, "02222", "000", "רוטשילד 4 תל אביב", "10085");
+        this.setMeterDemo(database, "11111", "123", "המלך יהואחז 5 אשדוד", "7800");
+        this.setMeterDemo(database, "22222", "123", "הציונות 1 אשדוד", "1400");
+        this.setMeterDemo(database, "33333", "123", "הרב ניסים 13 אשדוד", "9000");
+        this.setMeterDemo(database, "01111", "000", "בלפור 14 תל אביב", "500");
+        this.setMeterDemo(database, "02222", "000", "רוטשילד 4 תל אביב", "10085");
     }
 
-    private void putDemoReadingInfo()
+    private void putDemoReadingInfo(SQLiteDatabase database)
     {
-        this.setRead(this, "1", "11111", "01,01,2015", "00:00:00", "30");
-        this.setRead(this, "2", "11111", "02,01,2015", "00:00:00", "45");
-        this.setRead(this, "3", "11111", "01,02,2015", "00:00:00", "34");
-        this.setRead(this, "4", "11111", "02,02,2015", "00:00:00", "67");
-        this.setRead(this, "5", "11111", "01,01,2014", "00:00:00", "34");
-        this.setRead(this, "6", "11111", "01,02,2015", "00:00:00", "23");
+        this.setReadDemo(database, "1", "11111", "01,01,2015", "00:00:00", "30");
+        this.setReadDemo(database, "2", "11111", "02,01,2015", "00:00:00", "45");
+        this.setReadDemo(database, "3", "11111", "01,02,2015", "00:00:00", "34");
+        this.setReadDemo(database, "4", "11111", "02,02,2015", "00:00:00", "67");
+        this.setReadDemo(database, "5", "11111", "01,01,2014", "00:00:00", "34");
+        this.setReadDemo(database, "6", "11111", "01,02,2015", "00:00:00", "23");
 
-        this.setRead(this, "7", "22222", "01,01,2015", "00:00:00", "34");
-        this.setRead(this, "8", "22222", "02,01,2015", "00:00:00", "25");
-        this.setRead(this, "9", "22222", "01,02,2015", "00:00:00", "45");
-        this.setRead(this, "10", "22222", "02,02,2015", "00:00:00", "67");
-        this.setRead(this, "11", "22222", "01,01,2014", "00:00:00", "55");
-        this.setRead(this, "12", "22222", "01,02,2015", "00:00:00", "88");
+        this.setReadDemo(database, "7", "22222", "01,01,2015", "00:00:00", "34");
+        this.setReadDemo(database, "8", "22222", "02,01,2015", "00:00:00", "25");
+        this.setReadDemo(database, "9", "22222", "01,02,2015", "00:00:00", "45");
+        this.setReadDemo(database, "10", "22222", "02,02,2015", "00:00:00", "67");
+        this.setReadDemo(database, "11", "22222", "01,01,2014", "00:00:00", "55");
+        this.setReadDemo(database, "12", "22222", "01,02,2015", "00:00:00", "88");
 
-        this.setRead(this, "13", "33333", "01,01,2015", "00:00:00", "35");
-        this.setRead(this, "14", "33333", "02,01,2015", "00:00:00", "46");
-        this.setRead(this, "15", "33333", "01,02,2015", "00:00:00", "57");
-        this.setRead(this, "15", "33333", "02,02,2015", "00:00:00", "37");
-        this.setRead(this, "16", "33333", "01,01,2014", "00:00:00", "25");
-        this.setRead(this, "17", "33333", "01,02,2015", "00:00:00", "22");
+        this.setReadDemo(database, "13", "33333", "01,01,2015", "00:00:00", "35");
+        this.setReadDemo(database, "14", "33333", "02,01,2015", "00:00:00", "46");
+        this.setReadDemo(database, "15", "33333", "01,02,2015", "00:00:00", "57");
+        this.setReadDemo(database, "15", "33333", "02,02,2015", "00:00:00", "37");
+        this.setReadDemo(database, "16", "33333", "01,01,2014", "00:00:00", "25");
+        this.setReadDemo(database, "17", "33333", "01,02,2015", "00:00:00", "22");
 
-        this.setRead(this, "18", "01111", "01,01,2015", "00:00:00", "11");
-        this.setRead(this, "19", "01111", "02,01,2015", "00:00:00", "23");
-        this.setRead(this, "20", "01111", "01,02,2015", "00:00:00", "15");
-        this.setRead(this, "21", "01111", "02,02,2015", "00:00:00", "74");
-        this.setRead(this, "22", "01111", "01,01,2014", "00:00:00", "99");
-        this.setRead(this, "23", "01111", "01,02,2015", "00:00:00", "67");
+        this.setReadDemo(database, "18", "01111", "01,01,2015", "00:00:00", "11");
+        this.setReadDemo(database, "19", "01111", "02,01,2015", "00:00:00", "23");
+        this.setReadDemo(database, "20", "01111", "01,02,2015", "00:00:00", "15");
+        this.setReadDemo(database, "21", "01111", "02,02,2015", "00:00:00", "74");
+        this.setReadDemo(database, "22", "01111", "01,01,2014", "00:00:00", "99");
+        this.setReadDemo(database, "23", "01111", "01,02,2015", "00:00:00", "67");
 
-        this.setRead(this, "24", "02222", "01,01,2015", "00:00:00", "67");
-        this.setRead(this, "25", "02222", "02,01,2015", "00:00:00", "64");
-        this.setRead(this, "26", "02222", "01,02,2015", "00:00:00", "46");
-        this.setRead(this, "27", "02222", "02,02,2015", "00:00:00", "28");
-        this.setRead(this, "28", "02222", "01,01,2014", "00:00:00", "83");
-        this.setRead(this, "29", "02222", "01,02,2015", "00:00:00", "44");
+        this.setReadDemo(database, "24", "02222", "01,01,2015", "00:00:00", "67");
+        this.setReadDemo(database, "25", "02222", "02,01,2015", "00:00:00", "64");
+        this.setReadDemo(database, "26", "02222", "01,02,2015", "00:00:00", "46");
+        this.setReadDemo(database, "27", "02222", "02,02,2015", "00:00:00", "28");
+        this.setReadDemo(database, "28", "02222", "01,01,2014", "00:00:00", "83");
+        this.setReadDemo(database, "29", "02222", "01,02,2015", "00:00:00", "44");
     }
 
     public boolean checkIfUserNameExists(String clientNameFromUser)
@@ -265,10 +266,10 @@ public class DatabaseOperations extends SQLiteOpenHelper
             passwordDb = cursor.getString(1);
 
             Log.d("Dtabase operations", "Check if: " + clientName + ", from user, is equals to: " + clientNameDb);
-            Log.d("Dtabase operations", "Check if: " + password + ", from user, is equals to: " + passwordDb);
 
             if (clientNameDb.equalsIgnoreCase(clientName))
             {
+                Log.d("Dtabase operations", "Check if: " + password + ", from user, is equals to: " + passwordDb);
                 if (passwordDb.equalsIgnoreCase(password))
                 {
                     clientId = cursor.getString(0);
@@ -316,7 +317,39 @@ public class DatabaseOperations extends SQLiteOpenHelper
         return null;
     }
 
-    private String getAllTablesString(DatabaseOperations databaseOperations)
+    public String getPasswordIfUserNameExits(String clientName)
+    {
+        Cursor cursor = getClientInfo(this);
+        String clientNameDb;
+        String clientPasswordDb;
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            clientNameDb = cursor.getString(2);
+
+            Log.d("Dtabase operations", "Check if: " + clientName + ", from user, is equals to: " + clientNameDb);
+
+            if (clientNameDb.equalsIgnoreCase(clientName))
+            {
+                clientPasswordDb = cursor.getString(1);
+                cursor.close();
+
+                Log.d("Dtabase operations", "Password found: " + clientPasswordDb);
+
+                return clientPasswordDb;
+            }
+
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+        return null;
+    }
+
+    public String getAllTablesString(DatabaseOperations databaseOperations)
     {
         Log.i("Dtabase operations", "Get all the tables");
         StringBuffer stringBuffer = new StringBuffer();
@@ -330,10 +363,12 @@ public class DatabaseOperations extends SQLiteOpenHelper
         while (!cursor.isAfterLast())
         {
             stringBuffer.append(cursor.getString(0));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(1));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(2));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(3));
-            stringBuffer.append(cursor.getString(5));
             stringBuffer.append(System.getProperty("line.separator"));
             cursor.moveToNext();
         }
@@ -352,6 +387,7 @@ public class DatabaseOperations extends SQLiteOpenHelper
         while (!cursor.isAfterLast())
         {
             stringBuffer.append(cursor.getString(0));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(1));
             stringBuffer.append(System.getProperty("line.separator"));
             cursor.moveToNext();
@@ -371,29 +407,11 @@ public class DatabaseOperations extends SQLiteOpenHelper
         while (!cursor.isAfterLast())
         {
             stringBuffer.append(cursor.getString(0));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(1));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(2));
-            stringBuffer.append(cursor.getString(3));
-            stringBuffer.append(System.getProperty("line.separator"));
-            cursor.moveToNext();
-        }
-
-        stringBuffer.append("---------------------------");
-        stringBuffer.append(System.getProperty("line.separator"));
-        cursor.close();
-
-        ////////////////////////////////////////////////////
-        cursor = getMeterInfo(databaseOperations);
-
-        stringBuffer.append("---Meter Table--");
-        stringBuffer.append(System.getProperty("line.separator"));
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast())
-        {
-            stringBuffer.append(cursor.getString(0));
-            stringBuffer.append(cursor.getString(1));
-            stringBuffer.append(cursor.getString(2));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(3));
             stringBuffer.append(System.getProperty("line.separator"));
             cursor.moveToNext();
@@ -413,9 +431,13 @@ public class DatabaseOperations extends SQLiteOpenHelper
         while (!cursor.isAfterLast())
         {
             stringBuffer.append(cursor.getString(0));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(1));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(2));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(3));
+            stringBuffer.append(" ");
             stringBuffer.append(cursor.getString(4));
             stringBuffer.append(System.getProperty("line.separator"));
             cursor.moveToNext();
@@ -427,6 +449,65 @@ public class DatabaseOperations extends SQLiteOpenHelper
 
 
         return stringBuffer.toString();
+    }
+
+
+    private long setClientDemo(SQLiteDatabase SQ, String userId, String password, String clientName, String address, String phoneNumber)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(Tables.ClientTable.UserId, userId);
+        cv.put(Tables.ClientTable.Password, password);
+        cv.put(Tables.ClientTable.ClientName, clientName);
+        cv.put(Tables.ClientTable.Address, address);
+        cv.put(Tables.ClientTable.PhoneNumber, phoneNumber);
+        long k = SQ.insert(Tables.ClientTable.TableName, null, cv);
+
+
+        Log.d("Dtabase operations", "One raw inserted to Client table");
+
+        return k;
+    }
+
+    private void setMeterDemo(SQLiteDatabase SQ, String meterID, String userId, String address, String kWh)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(Tables.MeterTable.MeterID, meterID);
+        cv.put(Tables.MeterTable.UserId, userId);
+        cv.put(Tables.MeterTable.Address, address);
+        cv.put(Tables.MeterTable.kWh, kWh);
+        long k = SQ.insert(Tables.MeterTable.TableName, null, cv);
+        Log.d("Dtabase operations", "One raw inserted to Meter table");
+    }
+
+    private long setReadDemo(SQLiteDatabase SQ, String readingID, String meterID, String date, String time, String kWhRead)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(Tables.ReadingTable.ReadingID, readingID);
+        cv.put(Tables.ReadingTable.MeterID, meterID);
+        cv.put(Tables.ReadingTable.Date, date);
+        cv.put(Tables.ReadingTable.Time, time);
+        cv.put(Tables.ReadingTable.kWhRead, kWhRead);
+        long k = SQ.insert(Tables.ReadingTable.TableName, null, cv);
+
+
+        Log.d("Dtabase operations", "One raw inserted to Reading table");
+
+        return k;
+    }
+
+    private long setUserTypeDemo(SQLiteDatabase SQ, String userId, String userType)
+    {
+        ContentValues cv = new ContentValues();
+
+        cv.put(Tables.UserTypeTable.UserId, userId);
+        cv.put(Tables.UserTypeTable.UserType, userType);
+
+        long k = SQ.insert(Tables.UserTypeTable.TableName, null, cv);
+
+
+        Log.d("Dtabase operations", "One raw inserted to User Type table");
+
+        return k;
     }
 }
 

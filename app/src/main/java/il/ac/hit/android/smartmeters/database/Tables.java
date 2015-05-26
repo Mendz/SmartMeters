@@ -30,7 +30,7 @@ public class Tables
         public static abstract class UserTypes
         {
             public static final String ADMIN = "admin";
-            public static final String CLINET = "client";
+            public static final String CLIENT = "client";
             public static final String SUPPORT = "support";
         }
     }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import il.ac.hit.android.smartmeters.R;
+import il.ac.hit.android.smartmeters.database.DatabaseOperations;
 import il.ac.hit.android.smartmeters.utils.UtilsDataBase;
 
 
@@ -75,7 +76,9 @@ public class ForgotPasswordActivity extends ActionBarActivity implements View.On
                 if (!TextUtils.isEmpty(_editTextUserName.getText().toString()))
                 {
                     String userName = _editTextUserName.getText().toString();
-                    _userGetPassword = UtilsDataBase.getPasswordIfUserNameExits(userName);
+                    DatabaseOperations databaseOperations = new DatabaseOperations(this);
+
+                    _userGetPassword = databaseOperations.getPasswordIfUserNameExits(userName);
 
                     if (_userGetPassword != null)
                     {
