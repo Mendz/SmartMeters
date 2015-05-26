@@ -61,21 +61,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        Log.d("login_activity", "within onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         printToLogAllTables();
-
-
-        mCheckBoxRememberPassword = (CheckBox) findViewById(R.id.checkBoxRememberPassword);
-
-        String clientId = getClientIdIfUserDataRemembered();
-
-        if (clientId != null)
-        {
-            goToIntentByUser(clientId);
-        }
-
 
         mButtonForgotPassword = (Button) findViewById(R.id.buttonForgetPassword);
         mButtonForgotPassword.setOnClickListener(this);
@@ -110,6 +100,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
         mLayoutLoginActivity = findViewById(R.id.layoutLogin);
         mLoginFormView.requestFocus();
 
+        mCheckBoxRememberPassword = (CheckBox) findViewById(R.id.checkBoxRememberPassword);
+
+        String clientId = getClientIdIfUserDataRemembered();
+
+        if (clientId != null)
+        {
+            goToIntentByUser(clientId);
+        }
     }
 
     @Override
@@ -172,6 +170,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
     private String getClientIdIfUserDataRemembered()
     {
+        Log.d("login_activity", "within getClientIdIfUserDataRemembered");
         boolean saveLogin;
 
         mLoginPreferences = getSharedPreferences(LoginPreferences.NAME, MODE_PRIVATE);
@@ -179,6 +178,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
         saveLogin = mLoginPreferences.getBoolean(LoginPreferences.SAVE_LOGIN, false);
 
+        Log.d("login_activity", "save login: " + saveLogin);
         if (saveLogin)
         {
             mUserNameView.setText(mLoginPreferences.getString(LoginPreferences.CLIENT_NAME, ""));
