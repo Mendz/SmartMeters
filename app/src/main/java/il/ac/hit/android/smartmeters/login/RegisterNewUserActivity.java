@@ -156,12 +156,13 @@ public class RegisterNewUserActivity extends ActionBarActivity implements View.O
                 }
                 else
                 {
-                    //TODO: maybe add a progress bar
+                    //TODO: changed the client id to hash code
 
                     String clientName = _editTextUserName.getText().toString();
                     String address = _editTextAddress.getText().toString();
                     String phoneNumber = _editTextPhoneNumber.getText().toString();
-                    String clientId = String.valueOf(UUID.randomUUID());
+//                    String clientId = String.valueOf(UUID.randomUUID());
+                    String clientId = String.valueOf(clientName.hashCode());
                     clientId = TextUtils.substring(clientId,0,7);
 
 
