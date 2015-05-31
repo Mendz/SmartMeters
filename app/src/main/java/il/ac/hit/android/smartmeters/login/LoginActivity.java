@@ -57,6 +57,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     private SharedPreferences mLoginPreferences;
     private SharedPreferences.Editor mLoginPrefsEditor;
 
+    public static final String LOGIN_ACTION = "il.ac.hit.android.smartmeters.login.ACTION";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -120,7 +122,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
     private void printToLogAllTables()
     {
         DatabaseOperations databaseOperations = new DatabaseOperations(this);
-        String allTables = databaseOperations.getAllTablesString(databaseOperations);
+        String allTables = databaseOperations.getAllTablesString();
 
         Log.d("Dtabase operations", "All the database: \n\n" + allTables);
     }
@@ -157,6 +159,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
         if (intent != null)
         {
+            intent.setAction(LOGIN_ACTION);
             startActivity(intent);
             finish();
         }

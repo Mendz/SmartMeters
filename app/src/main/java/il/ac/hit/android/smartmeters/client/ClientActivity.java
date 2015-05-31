@@ -31,7 +31,11 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
         buttonDetails.setOnClickListener(this);
 
         Intent intent = this.getIntent();
-        _id = intent.getStringExtra(Tables.ClientTable.UserId);
+
+        if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(LoginActivity.LOGIN_ACTION))
+        {
+            _id = intent.getStringExtra(Tables.ClientTable.UserId);
+        }
     }
 
 

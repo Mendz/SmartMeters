@@ -48,7 +48,7 @@ public class ClientDetailsActivity extends ActionBarActivity
 
     private void setMeterDetails()
     {
-        List<Meter> meterList = _databaseOperations.getAllMetersById(_id, _databaseOperations);
+        List<Meter> meterList = _databaseOperations.getAllMetersById(_id);
 
         TextView textViewMeterDetails;
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -72,7 +72,7 @@ public class ClientDetailsActivity extends ActionBarActivity
 
     private void fillAllTheClientTextViews()
     {
-        Client client = _databaseOperations.getClientById(_id, _databaseOperations);
+        Client client = _databaseOperations.getClientById(_id);
 
         _textViewId.setText(_id);
         ;

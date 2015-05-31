@@ -91,7 +91,7 @@ public class ClientMap extends FragmentActivity
 
         DatabaseOperations databaseOperations = new DatabaseOperations(this);
 
-        List<Meter> metersById = databaseOperations.getAllMetersById(_id, databaseOperations);
+        List<Meter> metersById = databaseOperations.getAllMetersById(_id);
 
         Log.d("client_map", "The meters: : " + Arrays.toString(metersById.toArray()));
         String address, meterID, kwhCumulative;
