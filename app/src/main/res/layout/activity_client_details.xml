@@ -81,6 +81,56 @@
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:textAppearance="?android:attr/textAppearanceMedium" android:text="Medium Text"
-                  android:id="@+id/textViewClientPhoneNumberShow"/>
+                  android:id="@+id/textViewClientPhoneNumberShow" />
+    </LinearLayout>
+
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/text_view_title_meter_details"
+            android:id="@+id/textViewTitleMeter" android:layout_gravity="center_horizontal"
+            android:layout_marginTop="70dp"/>
+
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="96dp"
+                android:layout_height="wrap_content" android:id="@+id/linearLayoutMeterId">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/marker_meter_id"
+                    android:id="@+id/textViewMeterId"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="117dp"
+                android:layout_height="match_parent" android:id="@+id/linearLayoutMeterAddress">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/marker_meter_address"
+                    android:id="@+id/textViewMeterAddress"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:id="@+id/linearLayoutMeterKwh">
+            <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/text_view_meter_details_kwh"
+                    android:id="@+id/textViewMeterkWh"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

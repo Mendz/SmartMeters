@@ -30,9 +30,6 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
         Button buttonDetails = (Button) findViewById(R.id.buttonClientDetails);
         buttonDetails.setOnClickListener(this);
 
-        Button buttonSupport = (Button) findViewById(R.id.buttonClientService);
-        buttonSupport.setOnClickListener(this);
-
         Intent intent = this.getIntent();
         _id = intent.getStringExtra(Tables.ClientTable.UserId);
     }
@@ -78,12 +75,6 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
             case R.id.buttonClientDetails:
             {
                 intent = new Intent(this, ClientDetailsActivity.class);
-                intent.putExtra(Tables.ClientTable.UserId, _id);
-            }
-            break;
-            case R.id.buttonClientService:
-            {
-                intent = new Intent(this, ClientMap.class);
                 intent.putExtra(Tables.ClientTable.UserId, _id);
             }
             break;

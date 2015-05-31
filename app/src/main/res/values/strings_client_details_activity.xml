@@ -6,4 +6,10 @@
     <string name="text_view_client_details_address">Address: </string>
     <string name="text_view_client_details_phone_number">Phone Number: </string>
 
+
+    <string name="text_view_title_meter_details">Meter Details</string>
+    <string name="text_view_meter_details_meter_id">Meter ID:</string>
+    <string name="text_view_meter_details_address">Meter Address:</string>
+    <string name="text_view_meter_details_kwh">Meter Kwh:</string>
+
 </resources>

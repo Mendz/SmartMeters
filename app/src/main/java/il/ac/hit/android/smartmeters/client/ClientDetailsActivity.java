@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import il.ac.hit.android.smartmeters.R;
 import il.ac.hit.android.smartmeters.database.DatabaseOperations;
+import il.ac.hit.android.smartmeters.database.Meter;
 import il.ac.hit.android.smartmeters.database.Tables;
 import il.ac.hit.android.smartmeters.utils.UtilsSignOut;
+
+import java.util.List;
 
 public class ClientDetailsActivity extends ActionBarActivity
 {
@@ -19,27 +24,55 @@ public class ClientDetailsActivity extends ActionBarActivity
     private TextView _textViewName;
     private TextView _textViewAddress;
     private TextView _textViewPhoneNumber;
+    private LinearLayout _linearLayoutMeterId;
+    private LinearLayout _linearLayoutMeterAddress;
+    private LinearLayout _linearLayoutMeterKwh;
+
+    private DatabaseOperations _databaseOperations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        _databaseOperations = new DatabaseOperations(this);
 
         _id = getIntent().getStringExtra(Tables.ClientTable.UserId);
 
         setContentView(R.layout.activity_client_details);
-        setAllTheTextViews();
+        setAllTheViews();
 
         fillAllTheClientTextViews();
 
+        setMeterDetails();
+    }
 
+    private void setMeterDetails()
+    {
+        List<Meter> meterList = _databaseOperations.getAllMetersById(_id, _databaseOperations);
 
+        TextView textViewMeterDetails;
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.topMargin = 10;
+
+        for (Meter meter : meterList)
+        {
+            textViewMeterDetails = new TextView(this);
+            textViewMeterDetails.setText(meter.getMeterId());
+            _linearLayoutMeterId.addView(textViewMeterDetails, params);
+
+            textViewMeterDetails = new TextView(this);
+            textViewMeterDetails.setText(meter.getAddress());
+            _linearLayoutMeterAddress.addView(textViewMeterDetails, params);
+
+            textViewMeterDetails = new TextView(this);
+            textViewMeterDetails.setText(meter.getkWh());
+            _linearLayoutMeterKwh.addView(textViewMeterDetails,params);
+        }
     }
 
     private void fillAllTheClientTextViews()
     {
-        DatabaseOperations databaseOperations = new DatabaseOperations(this);
-        Client client = databaseOperations.getClientById(_id, databaseOperations);
+        Client client = _databaseOperations.getClientById(_id, _databaseOperations);
 
         _textViewId.setText(_id);
         ;
@@ -47,7 +80,7 @@ public class ClientDetailsActivity extends ActionBarActivity
         _textViewAddress.setText(client.getAddress());
 
         String phoneNumber = client.getPhoneNumber();
-        if(!TextUtils.isEmpty(phoneNumber))
+        if (!TextUtils.isEmpty(phoneNumber))
         {
             _textViewPhoneNumber.setText(phoneNumber);
         }
@@ -57,12 +90,16 @@ public class ClientDetailsActivity extends ActionBarActivity
         }
     }
 
-    private void setAllTheTextViews()
+    private void setAllTheViews()
     {
         _textViewId = (TextView) findViewById(R.id.textViewClientIdShow);
         _textViewName = (TextView) findViewById(R.id.textViewClientNameShow);
         _textViewAddress = (TextView) findViewById(R.id.textViewClientAddressShow);
         _textViewPhoneNumber = (TextView) findViewById(R.id.textViewClientPhoneNumberShow);
+
+        _linearLayoutMeterId = (LinearLayout) findViewById(R.id.linearLayoutMeterId);
+        _linearLayoutMeterAddress = (LinearLayout) findViewById(R.id.linearLayoutMeterAddress);
+        _linearLayoutMeterKwh = (LinearLayout) findViewById(R.id.linearLayoutMeterKwh);
     }
 
 

@@ -15,7 +15,7 @@ import java.util.List;
 
 public class DatabaseOperations extends SQLiteOpenHelper
 {
-    public static final int database_version = 2;
+    public static final int database_version = 3;
     public String CreateQueryClientTable = "CREATE TABLE " + Tables.ClientTable.TableName + "(" + Tables.ClientTable.UserId + " TEXT," + Tables.ClientTable.ClientName + " TEXT," + Tables.ClientTable.Password + " TEXT," + Tables.ClientTable.Address + " TEXT," + Tables.ClientTable.PhoneNumber + " TEXT);";
     public String CreateQueryMeterTable = "CREATE TABLE " + Tables.MeterTable.TableName + "(" + Tables.MeterTable.UserId + " TEXT," + Tables.MeterTable.MeterID + " TEXT," + Tables.MeterTable.Address + " TEXT," + Tables.MeterTable.kWh + " TEXT);";
     public String CreateQueryReadingTable = "CREATE TABLE " + Tables.ReadingTable.TableName + "(" + Tables.ReadingTable.ReadingID + " TEXT," + Tables.ReadingTable.MeterID + " TEXT," + Tables.ReadingTable.Date + " TEXT," + Tables.ReadingTable.Time + " TEXT," + Tables.ReadingTable.kWhRead + " TEXT);";
@@ -175,12 +175,12 @@ public class DatabaseOperations extends SQLiteOpenHelper
 
     private void putDemoClientInfo(SQLiteDatabase database)
     {
-        this.setClientDemo(database, "951", "123", "Tom", "חולון הטכנולגי המכון", "");
-        this.setClientDemo(database, "753", "123", "Koko", "חולון הטכנולגי המכון", "");
-        this.setClientDemo(database, "000", "mendy", "Mendy", "ראשון 30 מוהליבר", "0549330469");
-        this.setClientDemo(database, "123", "inga", "Inga", "22 הערבה חולון", "0524669721");
-        this.setClientDemo(database, "456", "alon", "Alon", "לציון ראשון מערב", "");
-        this.setClientDemo(database, "654", "idan", "Idan", "המלך יהואחז 5 אשדוד", "");
+        this.setClientDemo(database, "951", "123", "Tom", "Golomb Street, Holon", "");
+        this.setClientDemo(database, "753", "123", "Koko", "Golomb Street, Holon", "");
+        this.setClientDemo(database, "000", "mendy", "Mendy", "Rishon LeTsiyon", "0549330469");
+        this.setClientDemo(database, "123", "inga", "Inga", "Holon", "0524669721");
+        this.setClientDemo(database, "456", "alon", "Alon", "west Rishon LeTsiyon", "");
+        this.setClientDemo(database, "654", "idan", "Idan", "Asdod", "");
     }
 
     private void putDemoMeterInfo(SQLiteDatabase database)
