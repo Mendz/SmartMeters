@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="text_view_title_support">Support Screen</string>
+    <string name="button_support_malfunction_data">malfunction data</string>
+    <string name="button_support_malfunction_map">malfunction map</string>
+    <string name="button_support_reports">reports</string>
+</resources>
