@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_view_title_client_details">Client Details</string>
+    <string name="text_view_client_details_id">ID: </string>
+    <string name="text_view_client_details_name">Name: </string>
+    <string name="text_view_client_details_address">Address: </string>
+    <string name="text_view_client_details_phone_number">Phone Number: </string>
+
+</resources>

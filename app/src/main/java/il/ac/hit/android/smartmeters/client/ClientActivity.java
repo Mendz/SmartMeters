@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import com.google.android.gms.internal.in;
 import il.ac.hit.android.smartmeters.R;
 import il.ac.hit.android.smartmeters.database.Tables;
 import il.ac.hit.android.smartmeters.login.LoginActivity;
@@ -70,19 +71,24 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
         {
             case R.id.buttonClientContersMap:
             {
-
+                intent = new Intent(this, ClientMap.class);
+                intent.putExtra(Tables.ClientTable.UserId, _id);
             }
             break;
             case R.id.buttonClientDetails:
             {
-
+                intent = new Intent(this, ClientDetailsActivity.class);
+                intent.putExtra(Tables.ClientTable.UserId, _id);
             }
             break;
             case R.id.buttonClientService:
             {
-
+                intent = new Intent(this, ClientMap.class);
+                intent.putExtra(Tables.ClientTable.UserId, _id);
             }
             break;
         }
+
+        startActivity(intent);
     }
 }

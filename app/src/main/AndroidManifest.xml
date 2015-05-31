@@ -1,104 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="il.ac.hit.android.smartmeters">
+    package="il.ac.hit.android.smartmeters" >
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <!--
  The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but are recommended.
     -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- @mipmap/ic_launcher -->
     <application
-            android:allowBackup="true"
-            android:icon="@drawable/icon_meter"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+        android:allowBackup="true"
+        android:icon="@drawable/icon_meter"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
         <activity
-                android:name=".MainActivity"
-                android:label="@string/app_name">
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
-                android:name=".login.LoginActivity"
-                android:label="@string/title_activity_login"
-                android:windowSoftInputMode="adjustResize|stateVisible">
+            android:name=".login.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-                android:name=".login.RegisterNewUserActivity"
-                android:label="@string/title_activity_register_new_user"
-                android:parentActivityName=".login.LoginActivity">
+            android:name=".login.RegisterNewUserActivity"
+            android:label="@string/title_activity_register_new_user"
+            android:parentActivityName=".login.LoginActivity" >
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".login.LoginActivity"/>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".login.LoginActivity" />
         </activity>
         <activity
-                android:name=".login.ForgotPasswordActivity"
-                android:label="@string/title_activity_forgot_password"
-                android:parentActivityName=".login.LoginActivity">
+            android:name=".login.ForgotPasswordActivity"
+            android:label="@string/title_activity_forgot_password"
+            android:parentActivityName=".login.LoginActivity" >
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".login.LoginActivity"/>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".login.LoginActivity" />
         </activity>
         <activity
-                android:name=".client.ClientActivity"
-                android:label="@string/title_activity_client">
-
+            android:name=".client.ClientActivity"
+            android:label="@string/title_activity_client" >
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".login.LoginActivity"/>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".login.LoginActivity" />
         </activity>
 
         <meta-data
-                android:name="com.google.android.gms.version"
-                android:value="@integer/google_play_services_version"/>
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <meta-data
-                android:name="com.google.android.maps.v2.API_KEY"
-                android:value="@string/google_maps_key"/>
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
 
         <activity
-                android:name=".client.ClientMap"
-                android:label="@string/title_activity_client_map">
+            android:name=".client.ClientMap"
+            android:label="@string/title_activity_client_map" >
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".client.ClientActivity"/>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".client.ClientActivity" />
         </activity>
         <activity
-                android:name=".support.ReportsActivity"
-                android:label="@string/title_activity_reports">
-
+            android:name=".support.ReportsActivity"
+            android:label="@string/title_activity_reports" >
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".support.SupportActivity"/>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".support.SupportActivity" />
         </activity>
         <activity
-                android:name=".AdminActivity"
-                android:label="@string/title_activity_admin">
-
+            android:name=".AdminActivity"
+            android:label="@string/title_activity_admin" >
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".login.LoginActivity"/>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".login.LoginActivity" />
         </activity>
         <activity
-                android:name=".support.SupportActivity"
-                android:label="@string/title_activity_support">
-
+            android:name=".support.SupportActivity"
+            android:label="@string/title_activity_support" >
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".login.LoginActivity"/>
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".login.LoginActivity" />
+        </activity>
+        <activity
+            android:name=".client.ClientDetailsActivity"
+            android:label="@string/title_activity_client_details"
+            android:parentActivityName=".client.ClientActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="il.ac.hit.android.smartmeters.client.ClientActivity" />
         </activity>
     </application>
 

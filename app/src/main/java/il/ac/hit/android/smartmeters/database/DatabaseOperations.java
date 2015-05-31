@@ -7,11 +7,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import il.ac.hit.android.smartmeters.client.Client;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DatabaseOperations extends SQLiteOpenHelper
 {
-    public static final int database_version = 1;
+    public static final int database_version = 2;
     public String CreateQueryClientTable = "CREATE TABLE " + Tables.ClientTable.TableName + "(" + Tables.ClientTable.UserId + " TEXT," + Tables.ClientTable.ClientName + " TEXT," + Tables.ClientTable.Password + " TEXT," + Tables.ClientTable.Address + " TEXT," + Tables.ClientTable.PhoneNumber + " TEXT);";
     public String CreateQueryMeterTable = "CREATE TABLE " + Tables.MeterTable.TableName + "(" + Tables.MeterTable.UserId + " TEXT," + Tables.MeterTable.MeterID + " TEXT," + Tables.MeterTable.Address + " TEXT," + Tables.MeterTable.kWh + " TEXT);";
     public String CreateQueryReadingTable = "CREATE TABLE " + Tables.ReadingTable.TableName + "(" + Tables.ReadingTable.ReadingID + " TEXT," + Tables.ReadingTable.MeterID + " TEXT," + Tables.ReadingTable.Date + " TEXT," + Tables.ReadingTable.Time + " TEXT," + Tables.ReadingTable.kWhRead + " TEXT);";
@@ -181,11 +185,11 @@ public class DatabaseOperations extends SQLiteOpenHelper
 
     private void putDemoMeterInfo(SQLiteDatabase database)
     {
-        this.setMeterDemo(database, "11111", "123", "המלך יהואחז 5 אשדוד", "7800");
-        this.setMeterDemo(database, "22222", "123", "הציונות 1 אשדוד", "1400");
-        this.setMeterDemo(database, "33333", "123", "הרב ניסים 13 אשדוד", "9000");
-        this.setMeterDemo(database, "01111", "000", "בלפור 14 תל אביב", "500");
-        this.setMeterDemo(database, "02222", "000", "רוטשילד 4 תל אביב", "10085");
+        this.setMeterDemo(database, "11111", "123", "Holon", "7800"); //המלך יהואחז 5 אשדוד
+        this.setMeterDemo(database, "22222", "123", "Tel Aviv", "1400"); //הציונות 1 אשדוד
+        this.setMeterDemo(database, "33333", "123", "Bat yam", "9000"); //הרב ניסים 13 אשדוד
+        this.setMeterDemo(database, "01111", "000", "Lud", "500");
+        this.setMeterDemo(database, "02222", "000", "Yafo", "10085");
     }
 
     private void putDemoReadingInfo(SQLiteDatabase database)
@@ -508,6 +512,80 @@ public class DatabaseOperations extends SQLiteOpenHelper
         Log.d("Dtabase operations", "One raw inserted to User Type table");
 
         return k;
+    }
+
+    public List<Meter> getAllMetersById(String clientId, DatabaseOperations databaseOperations)
+    {
+        List<Meter> meters = new ArrayList<>();
+        Meter meter = null;
+
+        Cursor cursor = getMeterInfo(databaseOperations);
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            meter = cursorToMeter(cursor);
+            Log.d("Dtabase operations", "Check if meterId from database: " + meter.getUserId() + " is equal to " + clientId);
+            if (meter.getUserId().equalsIgnoreCase(clientId))
+            {
+                meters.add(meter);
+            }
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+        return meters;
+    }
+
+    private Meter cursorToMeter(Cursor cursor)
+    {
+        Meter meter = new Meter();
+
+        meter.setUserId(cursor.getString(1));
+        meter.setMeterId(cursor.getString(0));
+        meter.setAddress(cursor.getString(2));
+        meter.setkWh(cursor.getString(3));
+
+        return meter;
+    }
+
+    private Client cursorToClient(Cursor cursor)
+    {
+        Client client = new Client();
+
+        client.setUserId(cursor.getString(0));
+        client.setPassword(cursor.getString(1));
+        client.setName(cursor.getString(2));
+        client.setAddress(cursor.getString(3));
+        client.setPhoneNumber(cursor.getString(4));
+
+        return client;
+    }
+
+    public Client getClientById(String clientId, DatabaseOperations databaseOperations)
+    {
+        Client client = null;
+
+        List<Client> clients = new ArrayList<>();
+
+        Cursor cursor = getClientInfo(databaseOperations);
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            client = cursorToClient(cursor);
+            if (client.getUserId().equalsIgnoreCase(clientId))
+            {
+                return client;
+            }
+
+            cursor.moveToNext();
+        }
+
+        return client;
     }
 }
 

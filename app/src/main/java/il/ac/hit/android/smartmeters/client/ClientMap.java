@@ -9,9 +9,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.*;
 import il.ac.hit.android.smartmeters.R;
+import il.ac.hit.android.smartmeters.database.DatabaseOperations;
+import il.ac.hit.android.smartmeters.database.Meter;
+import il.ac.hit.android.smartmeters.database.Tables;
 import il.ac.hit.android.smartmeters.utils.UtilsMaps;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class ClientMap extends FragmentActivity
 {
@@ -19,6 +24,7 @@ public class ClientMap extends FragmentActivity
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private static final LatLng LAT_LNG_CENTER = new LatLng(31.808124, 35.225466);
     private static final String DUMMY_TABLE_USER_WORKING_METERS = "rishon lezion:123456789:10000";
+    private String _id;
 
     @Override
 
@@ -26,6 +32,9 @@ public class ClientMap extends FragmentActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_map);
+
+        _id = getIntent().getStringExtra(Tables.ClientTable.UserId);
+
         setUpMapIfNeeded();
     }
 
@@ -76,36 +85,39 @@ public class ClientMap extends FragmentActivity
     {
         //mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
 
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(LAT_LNG_CENTER) // Sets the center of the map to Israel
-                .zoom(7)
-                .build(); // Creates a CameraPosition from the builder
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(LAT_LNG_CENTER) // Sets the center of the map to Israel
+                .zoom(7).build(); // Creates a CameraPosition from the builder
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        //        for (int i = 0; i < 3; i++)
-        //        {
-        String[] pieces = DUMMY_TABLE_USER_WORKING_METERS.split(":");
+        DatabaseOperations databaseOperations = new DatabaseOperations(this);
 
-        String address = pieces[0];
-        String meterID = pieces[1];
-        String kwhCumulative = pieces[2];
+        List<Meter> metersById = databaseOperations.getAllMetersById(_id, databaseOperations);
 
-        //todo: do it in another thread
-        markMetersMap(address, meterID, kwhCumulative);
-        //}
+        Log.d("client_map", "The meters: : " + Arrays.toString(metersById.toArray()));
+        String address, meterID, kwhCumulative;
+
+        for (Meter meter : metersById)
+        {
+            Log.d("client_map", "Get the meter: " + meter.toString());
+            address = meter.getAddress();
+            meterID = meter.getMeterId();
+            kwhCumulative = meter.getkWh();
+
+            //todo: do it in another thread
+            markMetersMap(address, meterID, kwhCumulative);
+        }
     }
 
     //todo:  customize the contents and design of info windows for the snippet
     //todo: http://stackoverflow.com/questions/15783227/aligning-the-text-in-google-maps-marker-snippet
     private void markMetersMap(String address, String meterId, String kwh)
     {
+        Log.d("client_map", "within markMetersMap");
         try
         {
             LatLng latLngAddress = UtilsMaps.getCoordinatesByAddress(this, address);
 
-            String snippet = getString(R.string.marker_meter_address) + address
-                    + " ||| "
-                    + getString(R.string.marker_meter_kwhCumulative) + kwh;
+            String snippet = getString(R.string.marker_meter_address) + address + " ||| " + getString(R.string.marker_meter_kwhCumulative) + kwh;
 
             //todo: take care if null
             if (latLngAddress != null)
@@ -113,8 +125,7 @@ public class ClientMap extends FragmentActivity
                 mMap.addMarker(new MarkerOptions().title(getString(R.string.marker_title) + meterId)
                         .snippet(snippet)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-                        .position(latLngAddress)
-                );
+                        .position(latLngAddress));
             }
             else
             {

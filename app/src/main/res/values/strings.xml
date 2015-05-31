@@ -17,5 +17,6 @@
     <string name="title_activity_reports">Reports</string>
     <string name="title_activity_admin">Admin</string>
     <string name="title_activity_support">Support</string>
+    <string name="title_activity_client_details">ClientDetailsActivity</string>
 
 </resources>
