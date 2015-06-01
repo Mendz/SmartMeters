@@ -10,6 +10,23 @@
               android:background="@color/color_background_layout"
               android:orientation="vertical">
 
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="159dp">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView" android:src="@drawable/support_male"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2" android:src="@drawable/support_female"/>
+    </LinearLayout>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView3" android:src="@drawable/support_screen"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,11 +39,11 @@
             android:layout_height="wrap_content"
             android:text="@string/button_support_reports"
             android:id="@+id/buttonReports"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="20dp" android:layout_marginLeft="55dp"/>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_support_map_all_meters"
             android:id="@+id/buttonMapAllMeters"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="20dp" android:layout_marginLeft="55dp"/>
 </LinearLayout>

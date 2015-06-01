@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="text_view_title_client">Client Screen</string>
+    <string name="text_view_title_client">Hello </string>
     <string name="button_client_counters_map">Show Counters Map</string>
     <string name="button_client_details">Details</string>
     <string name="button_client_add_meter">add meter</string>

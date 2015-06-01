@@ -611,6 +611,27 @@ public class DatabaseOperations extends SQLiteOpenHelper
         return null;
     }
 
+    public String getNameById(String id)
+    {
+        Cursor cursor = getClientInfo(this);
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            Client client = cursorToClient(cursor);
+
+            if (id.equalsIgnoreCase(client.getUserId()))
+            {
+                return client.getName();
+            }
+
+            cursor.moveToNext();
+        }
+
+        return null;
+    }
+
     public List<Meter> getAllMeters()
     {
         List<Meter> meterList = new ArrayList<>();

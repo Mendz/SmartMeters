@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import il.ac.hit.android.smartmeters.client.ClientActivity;
 import il.ac.hit.android.smartmeters.database.DatabaseOperations;
@@ -17,6 +18,7 @@ import il.ac.hit.android.smartmeters.database.Tables;
 import il.ac.hit.android.smartmeters.login.LoginActivity;
 import il.ac.hit.android.smartmeters.support.SupportActivity;
 import il.ac.hit.android.smartmeters.utils.UtilsSignOut;
+import il.ac.hit.android.smartmeters.utils.UtilsViewText;
 
 
 public class AdminActivity extends ActionBarActivity implements View.OnClickListener
@@ -30,6 +32,16 @@ public class AdminActivity extends ActionBarActivity implements View.OnClickList
         setContentView(R.layout.activity_admin);
 
         setTheViews();
+
+        TextView textViewAdminTitle = (TextView) findViewById(R.id.textViewTitleAdmin);
+
+        Intent intent = getIntent();
+        if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(LoginActivity.LOGIN_ACTION))
+        {
+            String id = intent.getStringExtra(Tables.ClientTable.UserId);
+            UtilsViewText.setTextViewTitleHello(textViewAdminTitle,id,this);
+        }
+
 
     }
 

@@ -10,17 +10,22 @@
               android:background="@color/color_background_layout"
               android:orientation="vertical">
 
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewAdminScreen" android:src="@drawable/admin_screen"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/text_view_title_admin"
             android:id="@+id/textViewTitleAdmin"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="20dp"/>
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="58dp" android:weightSum="1">
+            android:layout_height="58dp" android:weightSum="1" android:layout_marginTop="15dp">
         <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,5 +49,19 @@
             android:text="@string/button_access_support"
             android:id="@+id/buttonAccessSupport"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="20dp"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_marginTop="25dp">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageViewAdminOne" android:src="@drawable/admin_female"/>
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageViewAdminTwo" android:src="@drawable/admin_male"
+                android:layout_marginLeft="40dp"/>
+    </LinearLayout>
 </LinearLayout>

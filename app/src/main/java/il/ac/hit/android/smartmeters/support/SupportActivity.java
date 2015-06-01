@@ -8,8 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import il.ac.hit.android.smartmeters.R;
+import il.ac.hit.android.smartmeters.database.Tables;
+import il.ac.hit.android.smartmeters.login.LoginActivity;
 import il.ac.hit.android.smartmeters.utils.UtilsSignOut;
+import il.ac.hit.android.smartmeters.utils.UtilsViewText;
 
 
 public class SupportActivity extends ActionBarActivity implements View.OnClickListener
@@ -23,6 +27,15 @@ public class SupportActivity extends ActionBarActivity implements View.OnClickLi
 
         Button button = (Button) findViewById(R.id.buttonMapAllMeters);
         button.setOnClickListener(this);
+
+        TextView textViewSupportTitle = (TextView) findViewById(R.id.textViewSupportTitle);
+
+        Intent intent = getIntent();
+        if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(LoginActivity.LOGIN_ACTION))
+        {
+            String id = intent.getStringExtra(Tables.ClientTable.UserId);
+            UtilsViewText.setTextViewTitleHello(textViewSupportTitle, id, this);
+        }
     }
 
     @Override

@@ -150,7 +150,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
             case Tables.UserTypeTable.UserTypes.CLIENT:
             {
                 intent = new Intent(this, ClientActivity.class);
-                intent.putExtra(Tables.ClientTable.UserId, clientId);
             }
             break;
         }
@@ -159,6 +158,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>, 
 
         if (intent != null)
         {
+            intent.putExtra(Tables.ClientTable.UserId, clientId);
             intent.setAction(LOGIN_ACTION);
             startActivity(intent);
             finish();

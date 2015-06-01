@@ -4,19 +4,19 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 //import com.google.android.gms.internal.in;
 import il.ac.hit.android.smartmeters.R;
 import il.ac.hit.android.smartmeters.database.DatabaseOperations;
 import il.ac.hit.android.smartmeters.database.Tables;
 import il.ac.hit.android.smartmeters.login.LoginActivity;
-import il.ac.hit.android.smartmeters.utils.UtilsEditTextError;
+import il.ac.hit.android.smartmeters.utils.UtilsViewText;
 import il.ac.hit.android.smartmeters.utils.UtilsSignOut;
 
 import java.util.Random;
@@ -26,6 +26,7 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
 {
     private String _id;
     private EditText _editTextAddMeter;
+    private TextView _textViewTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,6 +42,9 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
         {
             _id = intent.getStringExtra(Tables.ClientTable.UserId);
         }
+
+        UtilsViewText.setTextViewTitleHello(_textViewTitle, _id, this);
+
     }
 
     private void setViews()
@@ -55,6 +59,8 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
         buttonAddMeter.setOnClickListener(this);
 
         _editTextAddMeter = (EditText) findViewById(R.id.editTextAddMeterAddress);
+
+        _textViewTitle = (TextView) findViewById(R.id.textViewClientScreen);
     }
 
 
@@ -117,17 +123,17 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
                         meterId *= -1;
                     }
 
-                    databaseOperations.setMeter(databaseOperations, String.valueOf(meterId).substring(0,7), _id, address, String
-                            .valueOf(kwh));
+                    databaseOperations.setMeter(databaseOperations, String.valueOf(meterId)
+                            .substring(0, 7), _id, address, String.valueOf(kwh));
 
-                    Toast.makeText(this,"Added meter in the address: " + address,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Added meter in the address: " + address, Toast.LENGTH_SHORT).show();
 
                     _editTextAddMeter.setText("");
 
                 }
                 else
                 {
-                    UtilsEditTextError.setEditTextErrorAndFocus(_editTextAddMeter, "You have to enter the address!");
+                    UtilsViewText.setEditTextErrorAndFocus(_editTextAddMeter, "You have to enter the address!");
                 }
             }
             break;
