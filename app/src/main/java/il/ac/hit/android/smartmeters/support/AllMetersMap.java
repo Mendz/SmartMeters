@@ -1,24 +1,21 @@
 package il.ac.hit.android.smartmeters.support;
 
-import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.*;
 import il.ac.hit.android.smartmeters.R;
 import il.ac.hit.android.smartmeters.database.DatabaseOperations;
 import il.ac.hit.android.smartmeters.database.Meter;
-import il.ac.hit.android.smartmeters.database.Tables;
-import il.ac.hit.android.smartmeters.login.LoginActivity;
 import il.ac.hit.android.smartmeters.utils.UtilsMaps;
-import il.ac.hit.android.smartmeters.utils.UtilsViewText;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,7 +27,6 @@ public class AllMetersMap extends FragmentActivity
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Map<Marker, Meter> markerMeterMap = new HashMap<>();
-    private String _id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,12 +34,6 @@ public class AllMetersMap extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_meters_map);
         setUpMapIfNeeded();
-
-        Intent intent = getIntent();
-        if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(LoginActivity.LOGIN_ACTION))
-        {
-            _id = intent.getStringExtra(Tables.ClientTable.UserId);
-        }
     }
 
     @Override
@@ -116,12 +106,19 @@ public class AllMetersMap extends FragmentActivity
                 TextView textViewMeterId = (TextView) view.findViewById(R.id.textViewMarkerMeterId);
                 TextView textViewAddress = (TextView) view.findViewById(R.id.textViewMarkerAddress);
                 TextView textViewKwh = (TextView) view.findViewById(R.id.textViewMarkerKwh);
+                LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.linearLayOutMarker);
+
+
+                TextView textViewClintId = new TextView(AllMetersMap.this);
+                textViewClintId.setTextAppearance(AllMetersMap.this, R.style.Base_TextAppearance_AppCompat_Large);
+                linearLayout.addView(textViewClintId);
 
                 Meter meter = markerMeterMap.get(marker);
 
-                textViewMeterId.setText("Meter ID:  " + meter.getMeterId() + "    Client ID: " + meter.getUserId());
+                textViewMeterId.setText("Meter ID:  " + meter.getMeterId());
                 textViewAddress.setText(meter.getAddress());
                 textViewKwh.setText(meter.getkWh());
+                textViewClintId.setText(" Client ID:     " + meter.getUserId());
 
                 return view;
             }
@@ -161,11 +158,14 @@ public class AllMetersMap extends FragmentActivity
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                         .position(latLngAddress));
 
+
+                DatabaseOperations databaseOperations = new DatabaseOperations(this);
+
                 Meter meter = new Meter();
                 meter.setMeterId(meterId);
                 meter.setAddress(address);
                 meter.setkWh(kwh);
-                meter.setUserId(_id);
+                meter.setUserId(databaseOperations.getClientIdByMeterId(meterId));
 
                 markerMeterMap.put(marker, meter);
             }

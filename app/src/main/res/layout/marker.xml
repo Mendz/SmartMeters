@@ -3,7 +3,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
         android:orientation="vertical" android:background="@color/color_background_marker"
-              android:theme="@style/AlertDialog.AppCompat">
+              android:theme="@style/AlertDialog.AppCompat" android:id="@+id/linearLayOutMarker">
 
     <LinearLayout
             android:orientation="horizontal"

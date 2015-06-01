@@ -648,5 +648,28 @@ public class DatabaseOperations extends SQLiteOpenHelper
 
         return meterList;
     }
+
+    public String getClientIdByMeterId(String meterId)
+    {
+        Meter meter;
+        Cursor cursor = getMeterInfo(this);
+
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast())
+        {
+            meter = cursorToMeter(cursor);
+
+            if (meterId.equalsIgnoreCase(meter.getMeterId()))
+            {
+                return meter.getUserId();
+            }
+
+            cursor.moveToNext();
+        }
+
+        return null;
+    }
+
 }
 
