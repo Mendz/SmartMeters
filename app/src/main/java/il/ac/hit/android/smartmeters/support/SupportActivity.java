@@ -71,6 +71,7 @@ public class SupportActivity extends ActionBarActivity implements View.OnClickLi
             {
                 Intent intent = new Intent(this, AllMetersMap.class);
                 intent.putExtra(Tables.ClientTable.UserId,_id);
+                intent.setAction(LoginActivity.LOGIN_ACTION);
                 startActivity(intent);
             }
             break;
