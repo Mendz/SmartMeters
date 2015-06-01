@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="text_view_title_admin">Hello </string>
-    <string name="button_access_client">access client</string>
+    <string name="button_access_client">ACCESS CLIENT</string>
     <string name="edit_text_access_client_hint">Enter the client name…</string>
     <string name="button_access_support">access support</string>
 </resources>

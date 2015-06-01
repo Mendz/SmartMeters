@@ -21,6 +21,6 @@ public class UtilsViewText
         String title = textViewTitleHello.getText().toString();
         String name = databaseOperations.getNameById(id);
 
-        textViewTitleHello.setText(title + " " + name);
+        textViewTitleHello.setText(title + " " + name + ".");
     }
 }
