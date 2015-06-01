@@ -3,7 +3,7 @@
     <string name="text_view_title">Registration Page : New User</string>
 
     <string name="edit_text_user_name">User Name (MUST)</string>
-    <string name="edit_text_password">Password (MUST - Min 3 Char)</string>
+    <string name="edit_text_password">Password (MUST-Min 3 Char)</string>
     <string name="edit_text_re_password">Re Password (MUST)</string>
     <string name="edit_text_address">Address (MUST)</string>
     <string name="edit_text_phone_number">Phone Number (OPTIONAL)</string>

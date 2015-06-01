@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+        android:orientation="vertical" android:background="@color/color_background_marker"
+              android:theme="@style/AlertDialog.AppCompat">
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:weightSum="1">
+        <ImageView
+                android:layout_width="58dp"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView6" android:src="@drawable/lighting" android:layout_weight="0.18"
+                android:layout_marginTop="5dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/marker_custom_meter_id"
+                android:id="@+id/textViewMarkerMeterId" android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="5dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/marker_custom_meter_address"
+                android:id="@+id/textView2" android:layout_marginLeft="5dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/textViewMarkerAddress" android:layout_marginLeft="25dp"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_marginTop="10dp">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/marker_custom_meter_kwh"
+                android:id="@+id/textView4" android:layout_marginLeft="5dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/textViewMarkerKwh" android:layout_marginLeft="65dp"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="marker_custom_meter_id">Meter ID:</string>
+    <string name="marker_custom_meter_address">Address: </string>
+    <string name="marker_custom_meter_kwh">Kwh: </string>
+</resources>

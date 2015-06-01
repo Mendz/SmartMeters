@@ -1,9 +1,14 @@
 package il.ac.hit.android.smartmeters.client;
 
+import android.app.Dialog;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -16,13 +21,17 @@ import il.ac.hit.android.smartmeters.utils.UtilsMaps;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ClientMap extends FragmentActivity
 {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private String _id;
+
+    private Map<Marker, Meter> markerMeterMap = new HashMap<>();
 
     @Override
 
@@ -110,7 +119,7 @@ public class ClientMap extends FragmentActivity
 
     //todo:  customize the contents and design of info windows for the snippet
     //todo: http://stackoverflow.com/questions/15783227/aligning-the-text-in-google-maps-marker-snippet
-    private void markMetersMap(String address, String meterId, String kwh)
+    private void markMetersMap(String address, final String meterId, String kwh)
     {
         Log.d("client_map", "within markMetersMap");
         try
@@ -122,10 +131,71 @@ public class ClientMap extends FragmentActivity
             //todo: take care if null
             if (latLngAddress != null)
             {
-                mMap.addMarker(new MarkerOptions().title(getString(R.string.marker_title) + meterId)
-                        .snippet(snippet)
+
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter()
+                {
+                    @Override
+                    public View getInfoWindow(Marker marker)
+                    {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker)
+                    {
+                        View view = getLayoutInflater().inflate(R.layout.marker, null);
+
+                        TextView textViewMeterId = (TextView) view.findViewById(R.id.textViewMarkerMeterId);
+                        TextView textViewAddress = (TextView) view.findViewById(R.id.textViewMarkerAddress);
+                        TextView textViewKwh = (TextView) view.findViewById(R.id.textViewMarkerKwh);
+
+                        Meter meter = markerMeterMap.get(marker);
+
+                        textViewMeterId.setText(getString(R.string.marker_meter_id) + "  " + meter.getMeterId());
+                        textViewAddress.setText(meter.getAddress());
+                        textViewKwh.setText(meter.getkWh());
+
+                        return view;
+                    }
+                });
+
+
+                Marker marker = mMap.addMarker(new MarkerOptions().title(getString(R.string.marker_title) + meterId)
+                        //                        .snippet(snippet)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                         .position(latLngAddress));
+
+                Meter meter = new Meter();
+                meter.setMeterId(meterId);
+                meter.setAddress(address);
+                meter.setkWh(kwh);
+
+                markerMeterMap.put(marker, meter);
+                //marker.showInfoWindow();
+
+                //                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+                //                {
+                //                    @Override
+                //                    public boolean onMarkerClick(Marker marker)
+                //                    {
+                //                        final Dialog dialog = new Dialog(ClientMap.this);
+                //                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                //                        dialog.setContentView(R.layout.marker);
+                //
+                //                        TextView textViewMeterId = (TextView) dialog.findViewById(R.id.textViewMarkerMeterId);
+                //                        TextView textViewAddress = (TextView) dialog.findViewById(R.id.textViewMarkerAddress);
+                //                        TextView textViewKwh = (TextView) dialog.findViewById(R.id.textViewMarkerKwh);
+                //
+                //                        Meter meter = markerMeterMap.get(marker);
+                //
+                //                        textViewMeterId.setText(getString(R.string.marker_meter_id) +"  " +meter.getMeterId());
+                //                        textViewAddress.setText(meter.getAddress());
+                //                        textViewKwh.setText(meter.getkWh());
+                //
+                //                        dialog.show();
+                //                        return true;
+                //                    }
+                //                });
             }
             else
             {

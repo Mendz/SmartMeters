@@ -3,6 +3,7 @@
     <color name="color_background_layout">#47A375</color>
     <color name="color_background_layout_login">@color/material_blue_grey_800</color>
     <color name="color_test">@color/accent_material_light</color>
+    <color name="color_background_marker">#FBD9D1</color>
     <!--#009688-->
     <color name="color_test2">#37474f</color>
 </resources>
