@@ -18,7 +18,7 @@ import il.ac.hit.android.smartmeters.utils.UtilsViewText;
 
 public class SupportActivity extends ActionBarActivity implements View.OnClickListener
 {
-
+    private String _id;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -33,8 +33,8 @@ public class SupportActivity extends ActionBarActivity implements View.OnClickLi
         Intent intent = getIntent();
         if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(LoginActivity.LOGIN_ACTION))
         {
-            String id = intent.getStringExtra(Tables.ClientTable.UserId);
-            UtilsViewText.setTextViewTitleHello(textViewSupportTitle, id, this);
+            _id = intent.getStringExtra(Tables.ClientTable.UserId);
+            UtilsViewText.setTextViewTitleHello(textViewSupportTitle, _id, this);
         }
     }
 
@@ -70,6 +70,7 @@ public class SupportActivity extends ActionBarActivity implements View.OnClickLi
             case R.id.buttonMapAllMeters:
             {
                 Intent intent = new Intent(this, AllMetersMap.class);
+                intent.putExtra(Tables.ClientTable.UserId,_id);
                 startActivity(intent);
             }
             break;

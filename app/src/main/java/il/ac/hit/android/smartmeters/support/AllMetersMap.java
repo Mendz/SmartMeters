@@ -1,29 +1,36 @@
 package il.ac.hit.android.smartmeters.support;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.*;
 import il.ac.hit.android.smartmeters.R;
 import il.ac.hit.android.smartmeters.database.DatabaseOperations;
 import il.ac.hit.android.smartmeters.database.Meter;
+import il.ac.hit.android.smartmeters.database.Tables;
+import il.ac.hit.android.smartmeters.login.LoginActivity;
 import il.ac.hit.android.smartmeters.utils.UtilsMaps;
+import il.ac.hit.android.smartmeters.utils.UtilsViewText;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AllMetersMap extends FragmentActivity
 {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private Map<Marker, Meter> markerMeterMap = new HashMap<>();
+    private String _id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,6 +38,12 @@ public class AllMetersMap extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_meters_map);
         setUpMapIfNeeded();
+
+        Intent intent = getIntent();
+        if (intent.getAction() != null && intent.getAction().equalsIgnoreCase(LoginActivity.LOGIN_ACTION))
+        {
+            _id = intent.getStringExtra(Tables.ClientTable.UserId);
+        }
     }
 
     @Override
@@ -86,6 +99,34 @@ public class AllMetersMap extends FragmentActivity
 
         UtilsMaps.setZommButtons(mMap);
 
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter()
+        {
+            @Override
+            public View getInfoWindow(Marker marker)
+            {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker)
+            {
+                View view = getLayoutInflater().inflate(R.layout.marker, null);
+
+                TextView textViewMeterId = (TextView) view.findViewById(R.id.textViewMarkerMeterId);
+                TextView textViewAddress = (TextView) view.findViewById(R.id.textViewMarkerAddress);
+                TextView textViewKwh = (TextView) view.findViewById(R.id.textViewMarkerKwh);
+
+                Meter meter = markerMeterMap.get(marker);
+
+                textViewMeterId.setText("Meter ID:  " + meter.getMeterId() + "    Client ID: " + meter.getUserId());
+                textViewAddress.setText(meter.getAddress());
+                textViewKwh.setText(meter.getkWh());
+
+                return view;
+            }
+        });
+
         DatabaseOperations databaseOperations = new DatabaseOperations(this);
 
         List<Meter> allMeters = databaseOperations.getAllMeters();
@@ -115,10 +156,18 @@ public class AllMetersMap extends FragmentActivity
             //todo: take care if null
             if (latLngAddress != null)
             {
-                mMap.addMarker(new MarkerOptions().title(getString(R.string.marker_title) + meterId)
-                        .snippet(snippet)
+                Marker marker = mMap.addMarker(new MarkerOptions().title(getString(R.string.marker_title) + meterId)
+                        //                        .snippet(snippet)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                         .position(latLngAddress));
+
+                Meter meter = new Meter();
+                meter.setMeterId(meterId);
+                meter.setAddress(address);
+                meter.setkWh(kwh);
+                meter.setUserId(_id);
+
+                markerMeterMap.put(marker, meter);
             }
             else
             {

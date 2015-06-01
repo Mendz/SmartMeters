@@ -98,6 +98,37 @@ public class ClientMap extends FragmentActivity
 
         UtilsMaps.setZommButtons(mMap);
 
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter()
+        {
+            @Override
+            public View getInfoWindow(Marker marker)
+            {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker)
+            {
+                View view = getLayoutInflater().inflate(R.layout.marker, null);
+
+                TextView textViewMeterId = (TextView) view.findViewById(R.id.textViewMarkerMeterId);
+                TextView textViewAddress = (TextView) view.findViewById(R.id.textViewMarkerAddress);
+                TextView textViewKwh = (TextView) view.findViewById(R.id.textViewMarkerKwh);
+
+                Meter meter = markerMeterMap.get(marker);
+
+                textViewMeterId.setText(getString(R.string.marker_meter_id) + "  " + meter.getMeterId());
+                textViewAddress.setText(meter.getAddress());
+                textViewKwh.setText(meter.getkWh());
+
+                return view;
+            }
+        });
+
+
+
+
         DatabaseOperations databaseOperations = new DatabaseOperations(this);
 
         List<Meter> metersById = databaseOperations.getAllMetersById(_id);
@@ -131,34 +162,6 @@ public class ClientMap extends FragmentActivity
             //todo: take care if null
             if (latLngAddress != null)
             {
-
-                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter()
-                {
-                    @Override
-                    public View getInfoWindow(Marker marker)
-                    {
-                        return null;
-                    }
-
-                    @Override
-                    public View getInfoContents(Marker marker)
-                    {
-                        View view = getLayoutInflater().inflate(R.layout.marker, null);
-
-                        TextView textViewMeterId = (TextView) view.findViewById(R.id.textViewMarkerMeterId);
-                        TextView textViewAddress = (TextView) view.findViewById(R.id.textViewMarkerAddress);
-                        TextView textViewKwh = (TextView) view.findViewById(R.id.textViewMarkerKwh);
-
-                        Meter meter = markerMeterMap.get(marker);
-
-                        textViewMeterId.setText(getString(R.string.marker_meter_id) + "  " + meter.getMeterId());
-                        textViewAddress.setText(meter.getAddress());
-                        textViewKwh.setText(meter.getkWh());
-
-                        return view;
-                    }
-                });
-
 
                 Marker marker = mMap.addMarker(new MarkerOptions().title(getString(R.string.marker_title) + meterId)
                         //                        .snippet(snippet)
