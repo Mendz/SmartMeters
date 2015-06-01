@@ -1,14 +1,18 @@
 package il.ac.hit.android.smartmeters.support;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import il.ac.hit.android.smartmeters.R;
 import il.ac.hit.android.smartmeters.utils.UtilsSignOut;
 
 
-public class SupportActivity extends ActionBarActivity
+public class SupportActivity extends ActionBarActivity implements View.OnClickListener
 {
 
     @Override
@@ -16,6 +20,9 @@ public class SupportActivity extends ActionBarActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_support);
+
+        Button button = (Button) findViewById(R.id.buttonMapAllMeters);
+        button.setOnClickListener(this);
     }
 
     @Override
@@ -34,17 +41,25 @@ public class SupportActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
-        {
-            return true;
-        }
-
         if (id == R.id.action_log_off)
         {
             UtilsSignOut.logOff(this);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.buttonMapAllMeters:
+            {
+                Intent intent = new Intent(this, AllMetersMap.class);
+                startActivity(intent);
+            }
+            break;
+        }
     }
 }

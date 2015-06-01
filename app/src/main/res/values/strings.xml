@@ -18,5 +18,6 @@
     <string name="title_activity_admin">Admin</string>
     <string name="title_activity_support">Support</string>
     <string name="title_activity_client_details">Client Details</string>
+    <string name="title_activity_all_meters_map">Map</string>
 
 </resources>

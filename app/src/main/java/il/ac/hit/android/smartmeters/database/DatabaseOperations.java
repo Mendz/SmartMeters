@@ -83,7 +83,7 @@ public class DatabaseOperations extends SQLiteOpenHelper
         return k;
     }
 
-    public void setMeter(DatabaseOperations dop, String meterID, String userId, String address, String kWh)
+    public long setMeter(DatabaseOperations dop, String meterID, String userId, String address, String kWh)
     {
         SQLiteDatabase SQ = dop.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -95,6 +95,8 @@ public class DatabaseOperations extends SQLiteOpenHelper
 
         SQ.close();
         Log.d("Dtabase operations", "One raw inserted to Meter table");
+
+        return k;
     }
 
     public long setRead(DatabaseOperations dop, String readingID, String meterID, String date, String time, String kWhRead)
@@ -607,6 +609,23 @@ public class DatabaseOperations extends SQLiteOpenHelper
         }
 
         return null;
+    }
+
+    public List<Meter> getAllMeters()
+    {
+        List<Meter> meterList = new ArrayList<>();
+
+        Cursor cursor = getMeterInfo(this);
+
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast())
+        {
+            meterList.add(cursorToMeter(cursor));
+            cursor.moveToNext();
+        }
+
+        return meterList;
     }
 }
 

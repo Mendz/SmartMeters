@@ -18,9 +18,15 @@
             android:id="@+id/textViewSupportTitle"
             android:layout_marginTop="10dp"/>
     <Button
-            android:layout_width="155dp"
+            android:layout_width="208dp"
             android:layout_height="wrap_content"
             android:text="@string/button_support_reports"
             android:id="@+id/buttonReports"
+            android:layout_marginTop="10dp"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_support_map_all_meters"
+            android:id="@+id/buttonMapAllMeters"
             android:layout_marginTop="10dp"/>
 </LinearLayout>

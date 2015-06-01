@@ -3,20 +3,29 @@ package il.ac.hit.android.smartmeters.client;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import com.google.android.gms.internal.in;
+import android.widget.EditText;
+import android.widget.Toast;
+//import com.google.android.gms.internal.in;
 import il.ac.hit.android.smartmeters.R;
+import il.ac.hit.android.smartmeters.database.DatabaseOperations;
 import il.ac.hit.android.smartmeters.database.Tables;
 import il.ac.hit.android.smartmeters.login.LoginActivity;
+import il.ac.hit.android.smartmeters.utils.UtilsEditTextError;
 import il.ac.hit.android.smartmeters.utils.UtilsSignOut;
+
+import java.util.Random;
 
 
 public class ClientActivity extends ActionBarActivity implements View.OnClickListener
 {
     private String _id;
+    private EditText _editTextAddMeter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -24,11 +33,7 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
 
-        Button buttonMetersMap = (Button) findViewById(R.id.buttonClientContersMap);
-        buttonMetersMap.setOnClickListener(this);
-
-        Button buttonDetails = (Button) findViewById(R.id.buttonClientDetails);
-        buttonDetails.setOnClickListener(this);
+        setViews();
 
         Intent intent = this.getIntent();
 
@@ -36,6 +41,20 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
         {
             _id = intent.getStringExtra(Tables.ClientTable.UserId);
         }
+    }
+
+    private void setViews()
+    {
+        Button buttonMetersMap = (Button) findViewById(R.id.buttonClientContersMap);
+        buttonMetersMap.setOnClickListener(this);
+
+        Button buttonDetails = (Button) findViewById(R.id.buttonClientDetails);
+        buttonDetails.setOnClickListener(this);
+
+        Button buttonAddMeter = (Button) findViewById(R.id.buttonAddMeter);
+        buttonAddMeter.setOnClickListener(this);
+
+        _editTextAddMeter = (EditText) findViewById(R.id.editTextAddMeterAddress);
     }
 
 
@@ -82,8 +101,41 @@ public class ClientActivity extends ActionBarActivity implements View.OnClickLis
                 intent.putExtra(Tables.ClientTable.UserId, _id);
             }
             break;
+            case R.id.buttonAddMeter:
+            {
+                if (!TextUtils.isEmpty(_editTextAddMeter.getText().toString()))
+                {
+                    String address = _editTextAddMeter.getText().toString();
+
+                    DatabaseOperations databaseOperations = new DatabaseOperations(this);
+                    Random randomGenerator = new Random();
+                    int kwh = randomGenerator.nextInt(1500);
+
+                    int meterId = address.hashCode();
+                    if (meterId < 0)
+                    {
+                        meterId *= -1;
+                    }
+
+                    databaseOperations.setMeter(databaseOperations, String.valueOf(meterId).substring(0,7), _id, address, String
+                            .valueOf(kwh));
+
+                    Toast.makeText(this,"Added meter in the address: " + address,Toast.LENGTH_SHORT).show();
+
+                    _editTextAddMeter.setText("");
+
+                }
+                else
+                {
+                    UtilsEditTextError.setEditTextErrorAndFocus(_editTextAddMeter, "You have to enter the address!");
+                }
+            }
+            break;
         }
 
-        startActivity(intent);
+        if (intent != null)
+        {
+            startActivity(intent);
+        }
     }
 }

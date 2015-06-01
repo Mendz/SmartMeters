@@ -27,5 +27,22 @@
         android:text="@string/button_client_details"
         android:id="@+id/buttonClientDetails"
         android:layout_marginTop="10dp"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/editTextAddMeterAddress" android:hint="@string/edit_text_client_add_meter_hint"/>
+        <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_client_add_meter"
+                android:id="@+id/buttonAddMeter"/>
+    </LinearLayout>
 
 </LinearLayout>

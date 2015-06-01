@@ -1,4 +1,4 @@
-package il.ac.hit.android.smartmeters.client;
+package il.ac.hit.android.smartmeters.support;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -7,32 +7,29 @@ import android.util.Log;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import il.ac.hit.android.smartmeters.R;
 import il.ac.hit.android.smartmeters.database.DatabaseOperations;
 import il.ac.hit.android.smartmeters.database.Meter;
-import il.ac.hit.android.smartmeters.database.Tables;
 import il.ac.hit.android.smartmeters.utils.UtilsMaps;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
-public class ClientMap extends FragmentActivity
+public class AllMetersMap extends FragmentActivity
 {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private String _id;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_client_map);
-
-        _id = getIntent().getStringExtra(Tables.ClientTable.UserId);
-
+        setContentView(R.layout.activity_all_meters_map);
         setUpMapIfNeeded();
     }
 
@@ -91,25 +88,21 @@ public class ClientMap extends FragmentActivity
 
         DatabaseOperations databaseOperations = new DatabaseOperations(this);
 
-        List<Meter> metersById = databaseOperations.getAllMetersById(_id);
+        List<Meter> allMeters = databaseOperations.getAllMeters();
 
-        Log.d("client_map", "The meters: : " + Arrays.toString(metersById.toArray()));
         String address, meterID, kwhCumulative;
 
-        for (Meter meter : metersById)
+        for (Meter meter : allMeters)
         {
             Log.d("client_map", "Get the meter: " + meter.toString());
             address = meter.getAddress();
             meterID = meter.getMeterId();
             kwhCumulative = meter.getkWh();
 
-            //todo: do it in another thread
             markMetersMap(address, meterID, kwhCumulative);
         }
     }
 
-    //todo:  customize the contents and design of info windows for the snippet
-    //todo: http://stackoverflow.com/questions/15783227/aligning-the-text-in-google-maps-marker-snippet
     private void markMetersMap(String address, String meterId, String kwh)
     {
         Log.d("client_map", "within markMetersMap");

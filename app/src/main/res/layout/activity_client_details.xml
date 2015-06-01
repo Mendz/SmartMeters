@@ -27,8 +27,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/text_view_client_details_id"
                 android:id="@+id/textViewClientId"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="115dp"/>
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="140dp"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,8 +44,8 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:textAppearance="?android:attr/textAppearanceMedium" android:text="@string/text_view_client_details_name"
                   android:id="@+id/textViewClientName"
-                  android:layout_marginLeft="50dp"
-                  android:layout_marginRight="86dp"/>
+                  android:layout_marginLeft="25dp"
+                  android:layout_marginRight="111dp"/>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:textAppearance="?android:attr/textAppearanceMedium" android:text="Medium Text"
@@ -60,8 +60,8 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:textAppearance="?android:attr/textAppearanceMedium" android:text="@string/text_view_client_details_address"
                   android:id="@+id/textViewClientAddress"
-                  android:layout_marginLeft="50dp"
-                  android:layout_marginRight="70dp"/>
+                  android:layout_marginLeft="25dp"
+                  android:layout_marginRight="95dp"/>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:textAppearance="?android:attr/textAppearanceMedium" android:text="Medium Text"
@@ -76,8 +76,8 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:textAppearance="?android:attr/textAppearanceMedium" android:text="@string/text_view_client_details_phone_number"
                   android:id="@+id/textViewClientPhoneNumber"
-                  android:layout_marginLeft="50dp"
-                  android:layout_marginRight="15dp"/>
+                  android:layout_marginLeft="25dp"
+                  android:layout_marginRight="40dp"/>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:textAppearance="?android:attr/textAppearanceMedium" android:text="Medium Text"
